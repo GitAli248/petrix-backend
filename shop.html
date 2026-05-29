@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PETRIX — Shop</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&family=Anton&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
+    body { font-family: 'Poppins', sans-serif; background: #0a0604; color: white; overflow-x: hidden; }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; background: rgba(10,6,4,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(253,68,17,0.1); }
+    .logo { font-weight: 900; font-size: 1.3rem; text-transform: uppercase; letter-spacing: 3px; display: flex; align-items: center; gap: 10px; }
+    .logo .pet { color: white; }
+    .logo .rix { color: #FD4411; }
+    .back-btn:hover { color: #FD4411; }
+    .nav-cart { display: flex; align-items: center; gap: 6px; color: white; text-decoration: none; font-size: 0.85rem; font-weight: 600; }
+    .nav-cart span { background: #FD4411; color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; }
+    .hero { text-align: center; padding: 8rem 2rem 3rem; max-width: 1200px; margin: 0 auto; }
+    .hero h1 { font-family: 'Anton', sans-serif; font-size: clamp(2.5rem, 8vw, 5rem); text-transform: uppercase; line-height: 1.1; }
+    .hero h1 span { color: #FD4411; }
+    .hero p { color: rgba(255,255,255,0.5); font-size: 1.1rem; margin-top: 0.8rem; max-width: 600px; margin-left: auto; margin-right: auto; }
+    section { padding: 0 2rem 3rem; max-width: 1200px; margin: 0 auto; }
+    .filter-bar { display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center; margin-bottom: 3rem; }
+    .filter-bar button { padding: 0.5rem 1.5rem; border-radius: 50px; border: 1px solid rgba(253,68,17,0.2); background: transparent; color: rgba(255,255,255,0.5); font-family: 'Poppins', sans-serif; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.3s; }
+    .filter-bar button.active, .filter-bar button:hover { background: #FD4411; color: white; border-color: #FD4411; }
+    .products { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
+    .product { background: rgba(255,255,255,0.02); border-radius: 24px; border: 1px solid rgba(253,68,17,0.08); overflow: hidden; transition: all 0.4s; }
+    .product:hover { transform: translateY(-8px); border-color: rgba(253,68,17,0.25); box-shadow: 0 20px 60px rgba(253,68,17,0.06); }
+    .product .img-wrap, .product a.img-wrap { height: 220px; display: flex; align-items: center; justify-content: center; padding: 2rem; background: rgba(255,255,255,0.01); border-radius: 24px 24px 0 0; text-decoration: none; cursor: pointer; }
+    .product .img-wrap img { max-width: 140px; max-height: 180px; object-fit: contain; border-radius: 16px; transition: all 0.5s; }
+    .product:hover .img-wrap img { transform: scale(1.1) rotate(-4deg); }
+    .product .info { padding: 1.5rem; }
+    .product .info h3 { font-family: 'Anton', sans-serif; font-size: 1.3rem; text-transform: uppercase; letter-spacing: 1px; }
+    .product .info .desc { font-size: 0.78rem; color: rgba(255,255,255,0.45); margin: 0.4rem 0 0.8rem; line-height: 1.5; }
+    .product .info .price-row { display: flex; align-items: center; justify-content: space-between; }
+    .product .info .price { font-size: 1.4rem; font-weight: 900; color: #FD4411; }
+    .product .info .price .orig { font-size: 0.9rem; color: rgba(255,255,255,0.2); text-decoration: line-through; margin-left: 6px; font-weight: 400; }
+    .product .info .actions { display: flex; gap: 0.5rem; margin-top: 1rem; }
+    .product .info .actions button { flex: 1; padding: 0.7rem; border-radius: 12px; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.3s; border: none; }
+    .product .info .actions .add { background: rgba(253,68,17,0.1); color: #FD4411; border: 1px solid rgba(253,68,17,0.2); }
+    .product .info .actions .add:hover { background: rgba(253,68,17,0.2); }
+    .product .info .actions .buy { background: #FD4411; color: white; text-decoration: none; display: flex; align-items: center; justify-content: center; padding: 0.7rem; border-radius: 12px; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.3s; border: none; flex: 1; }
+    .product .info .actions .buy:hover { background: #e33d0f; }
+    .cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 200; display: none; }
+    .cart-overlay.open { display: block; }
+    .cart-sidebar { position: fixed; top: 0; right: -400px; width: 380px; max-width: 90vw; height: 100%; background: #0a0604; z-index: 201; border-left: 1px solid rgba(253,68,17,0.15); padding: 2rem 1.5rem; transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column; }
+    .cart-sidebar.open { right: 0; }
+    .cart-sidebar h2 { font-family: 'Anton', sans-serif; font-size: 1.5rem; text-transform: uppercase; margin-bottom: 1.5rem; }
+    .cart-sidebar .close { position: absolute; top: 1rem; right: 1.2rem; background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+    .cart-items { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 1rem; }
+    .cart-item { display: flex; align-items: center; gap: 1rem; padding: 1rem; background: rgba(255,255,255,0.02); border-radius: 16px; border: 1px solid rgba(253,68,17,0.06); }
+    .cart-item img { width: 50px; height: 50px; object-fit: contain; border-radius: 8px; }
+    .cart-item .ci-info { flex: 1; }
+    .cart-item .ci-info h4 { font-size: 0.85rem; font-weight: 700; }
+    .cart-item .ci-info .ci-price { font-size: 0.8rem; color: #FD4411; font-weight: 700; margin-top: 2px; }
+    .cart-item .ci-qty { display: flex; align-items: center; gap: 6px; }
+    .cart-item .ci-qty button { width: 26px; height: 26px; border-radius: 50%; border: 1px solid rgba(253,68,17,0.2); background: transparent; color: white; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; }
+    .cart-item .ci-qty span { font-size: 0.85rem; font-weight: 600; min-width: 20px; text-align: center; }
+    .cart-item .ci-remove { background: none; border: none; color: rgba(255,255,255,0.2); cursor: pointer; font-size: 1.1rem; padding: 4px; }
+    .cart-empty { text-align: center; color: rgba(255,255,255,0.3); padding: 3rem 0; font-size: 0.9rem; }
+    .cart-total { padding-top: 1.5rem; border-top: 1px solid rgba(253,68,17,0.1); margin-top: auto; }
+    .cart-total .row { display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 0.5rem; color: rgba(255,255,255,0.6); }
+    .cart-total .row.total { font-size: 1.2rem; font-weight: 900; color: white; }
+    .cart-total .row.total span { color: #FD4411; }
+    .checkout-btn { width: 100%; padding: 1rem; border: none; border-radius: 14px; background: #FD4411; color: white; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: all 0.3s; margin-top: 1rem; }
+    .checkout-btn:hover { background: #e33d0f; transform: scale(1.02); }
+    .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px); z-index: 300; padding: 1rem 2rem; border-radius: 16px; background: rgba(253,68,17,0.12); border: 1px solid rgba(253,68,17,0.25); backdrop-filter: blur(16px); color: white; font-size: 0.85rem; transition: transform 0.5s ease, opacity 0.5s ease; opacity: 0; pointer-events: none; max-width: 90vw; }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    .liquid-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .drip { position: absolute; top: -60px; border-radius: 0 0 50% 50%; animation: dripFall linear infinite; opacity: 0.08; }
+    .drip:nth-child(1) { left: 3%; height: 180px; animation-duration: 6s; animation-delay: 0s; width: 8px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(2) { left: 10%; height: 260px; animation-duration: 8s; animation-delay: -1.5s; width: 12px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(3) { left: 18%; height: 140px; animation-duration: 5.5s; animation-delay: -3s; width: 7px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(4) { left: 25%; height: 220px; animation-duration: 7s; animation-delay: -0.5s; width: 10px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(5) { left: 33%; height: 160px; animation-duration: 6.5s; animation-delay: -4s; width: 9px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(6) { left: 40%; height: 280px; animation-duration: 9s; animation-delay: -2s; width: 14px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(7) { left: 48%; height: 190px; animation-duration: 6.2s; animation-delay: -5s; width: 8px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(8) { left: 55%; height: 240px; animation-duration: 7.8s; animation-delay: -1s; width: 11px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(9) { left: 62%; height: 130px; animation-duration: 5s; animation-delay: -3.5s; width: 6px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(10) { left: 70%; height: 200px; animation-duration: 7.2s; animation-delay: -4.5s; width: 10px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(11) { left: 77%; height: 300px; animation-duration: 8.5s; animation-delay: -0.8s; width: 13px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(12) { left: 84%; height: 170px; animation-duration: 5.8s; animation-delay: -2.5s; width: 8px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(13) { left: 90%; height: 230px; animation-duration: 7.5s; animation-delay: -5.5s; width: 11px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(14) { left: 96%; height: 150px; animation-duration: 6.8s; animation-delay: -3.2s; width: 7px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(15) { left: 15%; height: 100px; animation-duration: 4.8s; animation-delay: -6s; width: 6px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(16) { left: 50%; height: 120px; animation-duration: 5.2s; animation-delay: -7s; width: 5px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(17) { left: 72%; height: 90px; animation-duration: 4.5s; animation-delay: -4.8s; width: 6px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(18) { left: 35%; height: 110px; animation-duration: 5s; animation-delay: -6.5s; width: 5px; background: linear-gradient(180deg, transparent, #FD7744); }
+    @keyframes dripFall { 0% { transform: translateY(-100px); opacity: 0; } 10% { opacity: 0.1; } 90% { opacity: 0.1; } 100% { transform: translateY(100vh); opacity: 0; } }
+    @media (max-width: 700px) { nav { padding: 0.8rem 1rem; } section { padding: 0 1rem 2rem; } .products { grid-template-columns: 1fr; } .product .img-wrap { height: 180px; } .product .img-wrap img { max-width: 100px; max-height: 140px; } }
+  </style>
+</head>
+<body>
+  <div class="liquid-bg" id="liquidBg"></div>
+  <nav>
+    <div class="logo"><a href="index.html" style="color:inherit;text-decoration:none;display:flex;align-items:center;"><span class="back-btn" style="font-size:1.1rem;color:#FD4411;text-decoration:none;font-weight:900;line-height:1;margin-right:10px;text-shadow:0 0 2px #FD4411;">❮</span><span class="pet">PET</span><span class="rix">RIX</span></a></div>
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <a href="login.html" id="shopAuthLink" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.78rem;text-transform:uppercase;letter-spacing:2px;font-weight:600;transition:color 0.3s;">Log In</a>
+      <a href="#" class="nav-cart" id="cartToggle">🛒 Cart <span id="cartCount">0</span></a>
+    </div>
+  </nav>
+  <div class="hero">
+    <h1>Taste the <span>Revolution</span></h1>
+    <p>Zero sugar. Zero compromise. Every flavor hits different.</p>
+  </div>
+  <section>
+    <div class="filter-bar">
+      <button class="active" data-filter="all">All</button>
+      <button data-filter="citrus">Citrus</button>
+      <button data-filter="berry">Berry</button>
+      <button data-filter="tropical">Tropical</button>
+    </div>
+    <div class="products" id="products"></div>
+  </section>
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <div class="cart-sidebar" id="cartSidebar">
+    <button class="close" id="cartClose">&times;</button>
+    <h2>Your Cart</h2>
+    <div class="cart-items" id="cartItems"><div class="cart-empty">Your cart is empty</div></div>
+    <div class="cart-total" id="cartTotal" style="display:none;">
+      <div class="row"><span>Subtotal</span><span id="subtotal">₹0</span></div>
+      <div class="row"><span>Shipping</span><span id="shipping">₹0</span></div>
+      <div class="row total"><span>Total</span><span id="total">₹0</span></div>
+      <button class="checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+  <script>
+    const lb = document.getElementById('liquidBg');
+    for (let i = 0; i < 18; i++) { const el = document.createElement('div'); el.className = 'drip'; lb.appendChild(el); }
+
+    const products = [
+      { id: 1, name: 'Lemon', img: 'LEMON.png', price: 20, category: 'citrus', color: '#f0e68c', desc: 'Bright lemon & lime with a hint of mint.' },
+      { id: 2, name: 'Blueberry', img: 'BLUEBERRY.png', price: 20, category: 'berry', color: '#8a6cf5', desc: 'Deep berry blend with blackcurrant.' },
+      { id: 3, name: 'Mango', img: 'MANGO.png', price: 20, category: 'tropical', color: '#ff9f43', desc: 'Ripe mango & passionfruit.' },
+      { id: 4, name: 'Pineapple', img: 'PINEAPPLE.png', price: 20, category: 'tropical', color: '#ff6b6b', desc: 'Tangy pineapple with a ginger kick.' },
+      { id: 5, name: 'Strawberry', img: 'STRAWBERRY.png', price: 20, category: 'berry', color: '#ff4d6d', desc: 'Sweet ripe strawberries.' },
+      { id: 6, name: 'Watermelon Lime', img: 'WATERMELON LIME.png', price: 20, category: 'citrus', color: '#7bc67e', desc: 'Juicy watermelon with fresh lime.' },
+      { id: 7, name: 'Banana', img: 'BANANA.png', price: 20, category: 'tropical', color: '#ffe135', desc: 'Creamy ripe banana sweetness.' },
+      { id: 8, name: 'Crisp Apple', img: 'CRISPAPPLE.png', price: 20, category: 'citrus', color: '#7ed957', desc: 'Fresh-picked apple with a crisp bite.' },
+      { id: 9, name: 'Mixed Fruit', img: 'MIXEDFRUIT.png', price: 20, category: 'tropical', color: '#f7a845', desc: 'Vibrant blend of tropical and citrus fruits.' },
+      { id: 10, name: 'Orange', img: 'ORANGE.png', price: 20, category: 'citrus', color: '#ff8c42', desc: 'Bold tangy orange with citrus finish.' },
+    ];
+    let cart = [], currentFilter = 'all';
+    const $ = id => document.getElementById(id);
+    const productsEl = $('products'), cartItemsEl = $('cartItems'), cartTotalEl = $('cartTotal'), cartCount = $('cartCount'), toast = $('toast');
+    const savedCart = JSON.parse(localStorage.getItem('petrixCart'));
+    if (savedCart && savedCart.length) { cart = savedCart; update(); }
+    function render() {
+      productsEl.innerHTML = '';
+      const filtered = currentFilter === 'all' ? products : products.filter(p => p.category === currentFilter);
+      filtered.forEach(p => { productsEl.innerHTML += `<div class="product"><a href="product.html?id=${p.id}" class="img-wrap"><img src="${p.img}" alt="${p.name}" loading="lazy"></a><div class="info"><h3 style="color:${p.color}">${p.name}</h3><p class="desc">${p.desc}</p><div class="price-row"><div class="price">₹${p.price} <span class="orig">₹${Math.round(p.price*1.3)}</span></div></div><div class="actions"><button class="add" onclick="addToCart(${p.id})">Add to Cart</button><a href="javascript:void(0)" class="buy" onclick="preOrder(${p.id})">Pre-Order</a></div></div></div>`; });
+    }
+    function addToCart(id) { const p = products.find(x => x.id === id); const e = cart.find(x => x.id === id); if (e) e.qty++; else cart.push({...p, qty: 1}); update(); localStorage.setItem('petrixCart', JSON.stringify(cart)); showToast(p.name+' added to cart'); }
+    function preOrder(id) {
+      const token = localStorage.getItem('petrixToken');
+      if (!token) { window.location.href = 'login.html?redirect=shop.html'; return; }
+      const p = products.find(x => x.id === id); cart = [{...p, qty: 1}]; localStorage.setItem('petrixCart', JSON.stringify(cart)); window.location.href = 'checkout.html';
+    }
+    function removeFromCart(id) { cart = cart.filter(x => x.id !== id); update(); localStorage.setItem('petrixCart', JSON.stringify(cart)); }
+    function changeQty(id, d) { const i = cart.find(x => x.id === id); if (!i) return; i.qty += d; if (i.qty <= 0) cart = cart.filter(x => x.id !== id); update(); localStorage.setItem('petrixCart', JSON.stringify(cart)); }
+    function update() {
+      const t = cart.reduce((s,x) => s + x.qty, 0);
+      cartCount.textContent = t;
+      if (!cart.length) { cartItemsEl.innerHTML = '<div class="cart-empty">Your cart is empty</div>'; cartTotalEl.style.display = 'none'; return; }
+      cartItemsEl.innerHTML = cart.map(i => `<div class="cart-item"><img src="${i.img}" alt="${i.name}"><div class="ci-info"><h4>${i.name}</h4><div class="ci-price">₹${i.price}</div></div><div class="ci-qty"><button onclick="changeQty(${i.id},-1)">−</button><span>${i.qty}</span><button onclick="changeQty(${i.id},1)">+</button></div><button class="ci-remove" onclick="removeFromCart(${i.id})">✕</button></div>`).join('');
+      const sub = cart.reduce((s,x) => s + x.price*x.qty, 0), ship = sub >= 500 ? 0 : 28;
+      $('subtotal').textContent = '₹'+sub; $('shipping').textContent = ship ? '₹'+ship : 'FREE'; $('total').textContent = '₹'+(sub+ship);
+      cartTotalEl.style.display = 'block';
+    }
+    function openCart() { $('cartOverlay').classList.add('open'); $('cartSidebar').classList.add('open'); }
+    function showToast(m) { toast.textContent = m; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 3000); }
+    document.querySelectorAll('.filter-bar button').forEach(b => { b.addEventListener('click', () => { document.querySelector('.filter-bar button.active').classList.remove('active'); b.classList.add('active'); currentFilter = b.dataset.filter; render(); }); });
+    $('cartToggle').addEventListener('click', e => { e.preventDefault(); openCart(); });
+    $('cartClose').addEventListener('click', () => { $('cartOverlay').classList.remove('open'); $('cartSidebar').classList.remove('open'); });
+    $('cartOverlay').addEventListener('click', () => { $('cartOverlay').classList.remove('open'); $('cartSidebar').classList.remove('open'); });
+    $('checkoutBtn').addEventListener('click', () => { window.location.href = 'checkout.html'; });
+    render();
+
+    const shopAuthLink = document.getElementById('shopAuthLink');
+    const tok = localStorage.getItem('petrixToken');
+    const usr = localStorage.getItem('petrixUser');
+    if (tok && usr) {
+      shopAuthLink.textContent = 'Profile';
+      shopAuthLink.href = 'profile.html';
+    }
+  </script>
+</body>
+</html>

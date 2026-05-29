@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>PETRIX &mdash; Coming Soon</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&family=Anton:wght@400&family=Armata&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #0a0604;
+      color: white;
+      overflow-x: hidden;
+    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0a0604; }
+    ::-webkit-scrollbar-thumb { background: #FD4411; border-radius: 10px; }
+    .liquid-bg {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      overflow: hidden;
+    }
+    .drip {
+      position: absolute; top: -60px; border-radius: 0 0 50% 50%;
+      animation: dripFall linear infinite;
+      opacity: 0.08;
+    }
+    .drip:nth-child(1) { left: 3%; height: 180px; animation-duration: 6s; animation-delay: 0s; width: 8px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(2) { left: 10%; height: 260px; animation-duration: 8s; animation-delay: -1.5s; width: 12px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(3) { left: 18%; height: 140px; animation-duration: 5.5s; animation-delay: -3s; width: 7px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(4) { left: 25%; height: 220px; animation-duration: 7s; animation-delay: -0.5s; width: 10px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(5) { left: 33%; height: 160px; animation-duration: 6.5s; animation-delay: -4s; width: 9px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(6) { left: 40%; height: 280px; animation-duration: 9s; animation-delay: -2s; width: 14px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(7) { left: 48%; height: 190px; animation-duration: 6.2s; animation-delay: -5s; width: 8px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(8) { left: 55%; height: 240px; animation-duration: 7.8s; animation-delay: -1s; width: 11px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(9) { left: 62%; height: 130px; animation-duration: 5s; animation-delay: -3.5s; width: 6px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(10) { left: 70%; height: 200px; animation-duration: 7.2s; animation-delay: -4.5s; width: 10px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(11) { left: 77%; height: 300px; animation-duration: 8.5s; animation-delay: -0.8s; width: 13px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(12) { left: 84%; height: 170px; animation-duration: 5.8s; animation-delay: -2.5s; width: 8px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(13) { left: 90%; height: 230px; animation-duration: 7.5s; animation-delay: -5.5s; width: 11px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(14) { left: 96%; height: 150px; animation-duration: 6.8s; animation-delay: -3.2s; width: 7px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(15) { left: 15%; height: 100px; animation-duration: 4.8s; animation-delay: -6s; width: 6px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(16) { left: 50%; height: 120px; animation-duration: 5.2s; animation-delay: -7s; width: 5px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(17) { left: 72%; height: 90px; animation-duration: 4.5s; animation-delay: -4.8s; width: 6px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(18) { left: 35%; height: 110px; animation-duration: 5s; animation-delay: -6.5s; width: 5px; background: linear-gradient(180deg, transparent, #FD7744); }
+    @keyframes dripFall {
+      0% { transform: translateY(-100px); opacity: 0; }
+      10% { opacity: 0.1; }
+      90% { opacity: 0.1; }
+      100% { transform: translateY(100vh); opacity: 0; }
+    }
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1rem 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(10,6,4,0.7); backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(253,68,17,0.08);
+      animation: fadeDown 0.8s ease-out both;
+    }
+    @keyframes fadeDown { 0% { opacity: 0; transform: translateY(-20px); } 100% { opacity: 1; transform: translateY(0); } }
+    .logo-img { height: 36px; width: auto; }
+    .nav-links { display: flex; gap: 1.8rem; list-style: none; align-items: center; }
+    .nav-links a {
+      text-decoration: none; color: rgba(255,255,255,0.5); font-size: 0.78rem;
+      text-transform: uppercase; letter-spacing: 2px; font-weight: 600;
+      transition: color 0.3s; position: relative;
+    }
+    .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: #FD4411; transition: width 0.3s; }
+    .nav-links a:hover { color: #FD4411; }
+    .nav-links a:hover::after { width: 100%; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; }
+    .hamburger span { width: 26px; height: 2px; background: rgba(255,255,255,0.6); transition: 0.3s; }
+    section {
+      position: relative; z-index: 1; min-height: 100vh;
+      padding: 4rem 2rem 3rem; max-width: 1200px; margin: 0 auto;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .split-title {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 900; text-transform: uppercase;
+      letter-spacing: 2px; margin-bottom: 1rem; text-align: center;
+      font-family: 'Anton', sans-serif;
+    }
+    .split-title .a { color: white; }
+    .split-title .b { color: #FD4411; }
+    .section-sub { color: rgba(255,255,255,0.35); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 4px; margin-bottom: 2.5rem; text-align: center; }
+    .divider { width: 60px; height: 2px; background: linear-gradient(90deg, transparent, #FD4411, transparent); margin: 0 auto 2rem; }
+    .reveal { opacity: 0; transform: translateY(60px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-left { opacity: 0; transform: translateX(-60px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+    .reveal-left.visible { opacity: 1; transform: translateX(0); }
+    .reveal-right { opacity: 0; transform: translateX(60px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+    .reveal-right.visible { opacity: 1; transform: translateX(0); }
+    .reveal-scale { opacity: 0; transform: scale(0.85); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+    .reveal-scale.visible { opacity: 1; transform: scale(1); }
+    #home { position: relative; max-width: none; width: 100%; min-height: 100vh; padding: 0; margin: 0; display: block; overflow: hidden; }
+    #home.fixed { position: fixed; top: 0; left: 0; right: 0; width: 100%; max-width: none; height: 100vh; z-index: 10; background: #0a0604; }
+    #hero-spacer { display: none; width: 100%; }
+    #home::before { content: ''; position: absolute; top: 50%; left: 50%; width: 600px; height: 600px; transform: translate(-50%, -50%); background: radial-gradient(circle, rgba(253,68,17,0.05), transparent 70%); pointer-events: none; }
+    .hero-img-wrap {
+      width: 100vw; height: 100vh; margin: 0; position: relative; overflow: hidden;
+    }
+    .hero-img-wrap img {
+      width: 100%; height: 100%; object-fit: cover; display: block; will-change: transform, opacity;
+    }
+    .hero-img-title {
+      position: absolute; inset: 0; z-index: 3;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      font-size: clamp(1.6rem, 5vw, 2.8rem);
+      font-weight: 900; text-transform: uppercase; text-align: center;
+      letter-spacing: 1px; line-height: 1; gap: 4px;
+      padding: 1rem; font-family: 'Anton', sans-serif;
+      will-change: transform, opacity;
+    }
+    .hero-img-title .a { color: white; }
+    .hero-img-title .b { color: #FD4411; }
+    .hero-img-title .c {
+      color: white; font-size: 0.45em; font-weight: 400;
+      text-transform: none; letter-spacing: normal; max-width: 45%; line-height: 1.3;
+      margin-top: 70px; font-family: 'Armata', sans-serif;
+    }
+    #home h1 { font-size: clamp(2rem, 7vw, 4.2rem); font-weight: 900; text-transform: uppercase; text-align: center; line-height: 1.1; font-family: 'Anton', sans-serif; }
+    #home h1 .a, #home h1 .b { display: inline; }
+    #home h1 .a { color: white; }
+    #home h1 .b { color: #FD4411; }
+    .hero-tagline { text-align: center; color: rgba(255,255,255,0.35); font-size: clamp(0.85rem,2vw,1rem); letter-spacing: 8px; text-transform: uppercase; margin-top: 0.6rem; }
+    .hero-cta { display: flex; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+    .hero-cta a { display: flex; align-items: center; justify-content: center; padding: 0.9rem 2.5rem; border-radius: 50px; font-weight: 700; font-size: 0.7rem; text-decoration: none; letter-spacing: 2px; text-transform: capitalize; transition: all 0.3s; position: relative; overflow: hidden; font-family: 'Poppins', sans-serif; }
+    .hero-cta a::after { content: ''; position: absolute; inset: 0; background: rgba(255,255,255,0.1); opacity: 0; transition: opacity 0.3s; }
+    .hero-cta a:hover::after { opacity: 1; }
+    .hero-cta a:active { transform: scale(0.95); }
+    .hero-cta .primary { background: white; color: black; box-shadow: 0 0 30px rgba(253,68,17,0.25); animation: pulseGlow 2.5s ease-in-out infinite; }
+    @keyframes pulseGlow { 0%,100% { box-shadow: 0 0 30px rgba(253,68,17,0.25); } 50% { box-shadow: 0 0 60px rgba(253,68,17,0.45); } }
+    .hero-cta .primary:hover { transform: scale(1.06); }
+    .hero-cta .secondary { border: 2px solid white; color: white; background: transparent; transition: all 0.3s; }
+    .hero-cta .secondary:hover { background: rgba(255,255,255,0.1); transform: scale(1.06); box-shadow: 0 0 30px rgba(255,255,255,0.15); }
+    .flavor-tags { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-top: 2.5rem; }
+    .flavor-tag { padding: 0.4rem 1.2rem; border-radius: 50px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; border: 1px solid rgba(253,68,17,0.12); color: white; background: rgba(255,255,255,0.02); animation: floatTag 4s ease-in-out infinite; }
+    .flavor-tag:nth-child(2) { animation-delay: 0.5s; } .flavor-tag:nth-child(3) { animation-delay: 1s; } .flavor-tag:nth-child(4) { animation-delay: 1.5s; }
+    @keyframes floatTag { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+    .flavor-tag:hover { color: #FD4411; border-color: #FD4411; }
+    .flavor-ticker-wrap {
+      width: 100%; overflow: hidden; margin-top: 0.5rem;
+      mask-image: linear-gradient(90deg, transparent, black 5%, black 95%, transparent);
+      -webkit-mask-image: linear-gradient(90deg, transparent, black 5%, black 95%, transparent);
+    }
+    .flavor-ticker { display: flex; padding: 16px 0; }
+    .flavor-ticker-track {
+      display: flex; gap: 1.8rem; cursor: grab; user-select: none;
+      -webkit-user-select: none;
+    }
+    .flavor-ticker-track:active { cursor: grabbing; }
+    .flavor-ticker-track .flavor-card {
+      flex-shrink: 0; width: 260px;
+      background: rgba(255,255,255,0.02); border-radius: 24px;
+      padding: 2rem 1.5rem 2.2rem; text-align: center;
+      border: 1px solid rgba(253,68,17,0.06); position: relative; overflow: hidden;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); cursor: default;
+    }
+    .flavor-ticker-track .flavor-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, transparent, var(--accent), transparent); transform: scaleX(0); transition: transform 0.6s; }
+    .flavor-ticker-track .flavor-card:hover::before { transform: scaleX(1); }
+    .flavor-ticker-track .flavor-card:hover { transform: translateY(-12px) scale(1.02); border-color: rgba(253,68,17,0.2); box-shadow: 0 30px 80px rgba(253,68,17,0.06); }
+    .flavor-ticker-track .flavor-card .img-wrap { margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; }
+    .flavor-ticker-track .flavor-card .img-wrap img { max-width: 130px; max-height: 130px; border-radius: 16px; transition: all 0.5s; }
+    .flavor-ticker-track .flavor-card:hover .img-wrap img { transform: scale(1.15) rotate(-4deg); }
+    .flavor-ticker-track .flavor-card h3 { font-weight: 700; font-size: 1.3rem; text-transform: uppercase; letter-spacing: 2px; }
+    .flavor-ticker-track .flavor-card .desc { font-size: 0.82rem; color: white; margin: 0.5rem 0 1.2rem; line-height: 1.6; }
+    .flavor-ticker-track .flavor-card .badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(253,68,17,0.1); color: #FD7744; padding: 0.3rem 1rem; border-radius: 50px; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+    #about { transform: translateY(100vh); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; width: 100%; margin-top: 0.5rem; }
+    @media (max-width: 768px) { .about-grid { grid-template-columns: 1fr; gap: 2.5rem; } }
+    .about-text p { color: white; line-height: 2; font-size: 0.92rem; margin-bottom: 1.2rem; }
+    .about-text .highlight { color: #FD4411; font-weight: 600; }
+    .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+    .about-stat { background: rgba(255,255,255,0.02); border-radius: 20px; padding: 2rem 1.5rem; text-align: center; border: 1px solid rgba(253,68,17,0.06); transition: all 0.4s; }
+    .about-stat:hover { border-color: rgba(253,68,17,0.2); transform: scale(1.04); }
+    .about-stat .big { font-size: 2.4rem; font-weight: 900; color: #FD4411; }
+    .about-stat .lbl { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; color: rgba(255,255,255,0.25); margin-top: 0.3rem; }
+    .process { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; width: 100%; margin-top: 2.5rem; }
+    @media (max-width: 600px) { .process { grid-template-columns: 1fr; } }
+    .process-step { text-align: center; position: relative; }
+    .process-step::after { content: '\2192'; position: absolute; right: -1.2rem; top: 1.5rem; color: rgba(253,68,17,0.25); font-size: 1.5rem; }
+    .process-step:last-child::after { display: none; }
+    @media (max-width: 600px) { .process-step::after { display: none; } }
+    .process-step .num { width: 50px; height: 50px; border-radius: 50%; margin: 0 auto 1rem; background: linear-gradient(135deg, rgba(253,68,17,0.12), rgba(253,119,68,0.12)); border: 1px solid rgba(253,68,17,0.18); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.2rem; color: #FD4411; }
+    .process-step h4 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 0.3rem; }
+    .process-step p { font-size: 0.78rem; color: rgba(255,255,255,0.35); line-height: 1.5; }
+    .contact-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; width: 100%; margin-top: 0.5rem; }
+    @media (max-width: 768px) { .contact-wrap { grid-template-columns: 1fr; } }
+    .contact-info p { color: white; line-height: 1.8; font-size: 0.88rem; margin-bottom: 2rem; }
+    .contact-item { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .contact-item .icon { width: 46px; height: 46px; border-radius: 14px; background: rgba(253,68,17,0.06); border: 1px solid rgba(253,68,17,0.1); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; transition: all 0.3s; }
+    .contact-item:hover .icon { background: rgba(253,68,17,0.1); border-color: #FD4411; transform: scale(1.05); }
+    .contact-item .info { font-size: 0.85rem; color: white; }
+    .contact-item .info strong { display: block; color: rgba(255,255,255,0.8); font-weight: 600; margin-bottom: 2px; }
+    .form-group { margin-bottom: 1.2rem; }
+    .form-group label { display: block; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; color: rgba(255,255,255,0.35); margin-bottom: 0.4rem; font-weight: 600; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.9rem 1.2rem; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(253,68,17,0.12); color: white; font-family: 'Poppins', sans-serif; font-size: 0.85rem; outline: none; transition: all 0.3s; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #FD4411; box-shadow: 0 0 25px rgba(253,68,17,0.06); background: rgba(255,255,255,0.05); }
+    .form-group textarea { resize: vertical; min-height: 110px; }
+    .form-group select option { background: #0a0604; color: white; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
+    .submit-btn { width: 100%; padding: 1rem; border: none; border-radius: 14px; background: #FD4411; color: white; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: all 0.3s; margin-top: 0.3rem; box-shadow: 0 0 30px rgba(253,68,17,0.18); position: relative; overflow: hidden; }
+    .submit-btn::after { content: ''; position: absolute; inset: 0; background: rgba(255,255,255,0.12); opacity: 0; transition: opacity 0.3s; }
+    .submit-btn:hover::after { opacity: 1; }
+    .submit-btn:hover { transform: scale(1.03); box-shadow: 0 0 60px rgba(253,68,17,0.4); }
+    .submit-btn:active { transform: scale(0.95); }
+    .form-hint { font-size: 0.7rem; color: rgba(255,255,255,0.25); text-align: center; margin-top: 0.8rem; }
+    .email-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(253,68,17,0.08); border: 1px solid rgba(253,68,17,0.15); padding: 0.5rem 1.2rem; border-radius: 50px; font-size: 0.78rem; color: #FD7744; text-decoration: none; transition: all 0.3s; margin-top: 0.5rem; }
+    .email-badge:hover { background: rgba(253,68,17,0.18); transform: scale(1.05); box-shadow: 0 0 30px rgba(253,68,17,0.15); }
+    .copy-feedback { font-size: 0.7rem; color: #FD4411; opacity: 0; transition: opacity 0.3s; margin-top: 0.3rem; }
+    .copy-feedback.show { opacity: 1; }
+    footer { position: relative; z-index: 1; padding: 4rem 2rem 2rem; color: rgba(255,255,255,0.12); font-size: 0.75rem; letter-spacing: 1px; border-top: 1px solid rgba(253,68,17,0.05); }
+    footer .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 3rem; margin-bottom: 3rem; text-align: left; }
+    footer .footer-col h4 { color: white; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1.2rem; font-weight: 700; }
+    footer .footer-col a { display: block; color: rgba(255,255,255,0.35); text-decoration: none; margin-bottom: 0.6rem; font-size: 0.78rem; transition: color 0.3s; cursor: pointer; }
+    footer .footer-col a:hover { color: #FD4411; }
+    footer .footer-bottom { text-align: center; border-top: 1px solid rgba(253,68,17,0.05); padding-top: 2rem; max-width: 1200px; margin: 0 auto; }
+    footer .social { display: flex; gap: 2rem; justify-content: center; margin-bottom: 1.5rem; }
+    footer .social a { color: rgba(255,255,255,0.35); text-decoration: none; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s; }
+    footer .social a:hover { color: #FD4411; transform: translateY(-2px); }
+    footer .legal-text { line-height: 1.8; color: rgba(255,255,255,0.25); font-size: 0.7rem; max-width: 800px; margin: 0 auto; }
+    .policy-modal { position: fixed; inset: 0; z-index: 500; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); padding: 2rem; }
+    .policy-modal.open { display: flex; }
+    .policy-modal-content { background: #0f0907; border: 1px solid rgba(253,68,17,0.15); border-radius: 24px; max-width: 700px; width: 100%; max-height: 80vh; overflow-y: auto; padding: 2.5rem; position: relative; }
+    .policy-modal-content h2 { font-family: 'Anton', sans-serif; font-size: 1.8rem; text-transform: uppercase; margin-bottom: 1.5rem; color: white; }
+    .policy-modal-content h2 span { color: #FD4411; }
+    .policy-modal-content h3 { font-size: 0.95rem; font-weight: 700; margin: 1.5rem 0 0.5rem; color: #FD7744; text-transform: uppercase; letter-spacing: 1px; }
+    .policy-modal-content p { font-size: 0.82rem; color: rgba(255,255,255,0.5); line-height: 1.8; margin-bottom: 0.8rem; }
+    .policy-modal-content ul { padding-left: 1.2rem; margin-bottom: 1rem; }
+    .policy-modal-content li { font-size: 0.82rem; color: rgba(255,255,255,0.5); line-height: 1.7; margin-bottom: 0.4rem; }
+    .policy-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; transition: color 0.3s; }
+    .policy-close:hover { color: #FD4411; }
+    .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px); z-index: 200; padding: 1rem 2rem; border-radius: 16px; background: rgba(253,68,17,0.1); border: 1px solid rgba(253,68,17,0.25); backdrop-filter: blur(16px); color: white; font-size: 0.85rem; transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease; opacity: 0; pointer-events: none; max-width: 90vw; }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    .desc-section { background: radial-gradient(ellipse at center, rgba(253,68,17,0.03), transparent 70%); border-top: 1px solid rgba(253,68,17,0.05); border-bottom: 1px solid rgba(253,68,17,0.05); }
+    .desc-section .desc-content { max-width: 900px; margin: 0 auto; color: white; font-size: 0.92rem; line-height: 1.9; }
+    .desc-section .desc-content p { margin-bottom: 1.5rem; }
+    .desc-section .desc-content strong { color: #FD4411; }
+    .desc-section .desc-content .highlight-block { display: block; margin: 0.6rem 0; padding-left: 1.2rem; border-left: 2px solid #FD4411; font-size: 0.85rem; line-height: 1.7; }
+    @media (max-width: 700px) {
+      nav { padding: 0.8rem 1rem; gap: 0; }
+      .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; background: #0a0604; padding: 1.5rem 2rem; gap: 1.2rem; z-index: 200; }
+      .nav-links a { color: white; font-size: 0.9rem; }
+      .nav-links.open { display: flex; }
+      .hamburger { display: flex; margin-right: -6px; }
+      .logo-img { height: 22px; width: auto; }
+      nav > div:first-child { gap: 4px !important; }
+      nav > div:first-child span { font-size: 0.75rem !important; letter-spacing: 1px !important; }
+      section { padding: 1.5rem 1rem !important; min-height: auto; }
+      #about { padding-top: 0.5rem !important; }
+      section[id="story"] { padding-top: 0.5rem !important; padding-bottom: 0.5rem !important; }
+      #flavors { padding-top: 0.5rem !important; padding-bottom: 0.5rem !important; }
+      #contact { padding-top: 0.5rem !important; }
+      #home { padding: 0 !important; height: 100vh; }
+      .hero-img-wrap { width: 100%; height: 100vh !important; margin: 0 !important; }
+      .hero-img-wrap img { height: 100% !important; border-radius: 0; object-fit: cover; }
+      .hero-img-title { padding: 0.5rem; gap: 6px; }
+      .hero-img-title .a { font-size: 0.85em; }
+      .hero-img-title .b { font-size: 0.85em; }
+      .hero-img-title .c { max-width: 95%; font-size: 0.5em; margin-top: 8px; }
+      .hero-cta { margin-top: 12px !important; gap: 8px; }
+      .hero-cta a { padding: 0.7rem 1.5rem; font-size: 0.65rem; }
+      #home h1 { font-size: clamp(1.5rem, 5vw, 2rem); }
+      .flavor-ticker-track .flavor-card { width: 140px; padding: 1rem 0.8rem; }
+      .flavor-ticker-track .flavor-card h3 { font-size: 0.9rem; }
+      .flavor-ticker-track .flavor-card .desc { font-size: 0.7rem; margin: 0.3rem 0 0.5rem; }
+      .flavor-ticker-track .flavor-card .img-wrap { width: 80px; height: 80px; }
+      .flavor-ticker-track .flavor-card .img-wrap img { max-width: 80px; max-height: 80px; }
+      .about-grid { grid-template-columns: 1fr; }
+      .about-stats { grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+      .about-stat { padding: 1.2rem 0.8rem; }
+      .about-stat .big { font-size: 1.5rem; }
+      .process { grid-template-columns: 1fr; gap: 1rem; }
+      .process-step::after { display: none; }
+      .contact-wrap { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .float-can { display: none; }
+      .drip { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="liquid-bg" id="liquidBg"></div>
+  <nav>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <img src="LOGO.png" alt="PETRIX" class="logo-img">
+      <span style="font-weight:900;font-size:1.1rem;text-transform:uppercase;letter-spacing:2px;background:linear-gradient(90deg, white 48%, #FD4411 48%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">PETRIX</span>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home" onclick="event.preventDefault();window.scrollTo({top:0,behavior:'smooth'});">Home</a></li>
+      <li><a href="#about" onclick="event.preventDefault();window.scrollTo({top:window.innerHeight,behavior:'smooth'});">About</a></li>
+      <li><a href="#flavors">Flavors</a></li>
+      <li><a href="#story">Description</a></li>
+      <li><a href="shop.html">Shop</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li id="authNavItem"><a href="login.html" style="color:#FD4411;font-weight:700;">Log In</a></li>
+    </ul>
+  </nav>
+  <section id="home">
+    <div class="hero-img-wrap">
+      <img src="main2.png" alt="PETRIX">
+      <h2 class="hero-img-title">
+        <span class="a">YOUR FIRST DRINK</span>
+        <span class="b">MIGHT BE UR LAST DRINK</span>
+        <span class="c">Experience the burst of natural flavours with PETRIX - Crafted for your every mood</span>
+        <div class="hero-cta" style="margin-top:80px;gap:10px;">
+          <a href="shop.html" class="primary">Pre‑Order Now</a>
+          <a href="#flavors" class="secondary">Explore Flavors</a>
+        </div>
+      </h2>
+    </div>
+  </section>
+  <div id="hero-spacer"></div>
+  <section id="about" style="margin-top:-100px;padding-top:2rem;">
+    <h2 class="split-title reveal"><span class="a">about</span> <span class="b">us</span></h2>
+    <p class="section-sub reveal">Why we exist</p>
+    <div class="divider reveal"></div>
+    <div class="about-grid">
+      <div class="about-text reveal-left">
+        <p>We started <span class="highlight">PETRIX</span> with one simple belief: you shouldn't have to choose between taste and health. Most drinks are either loaded with sugar or taste like disappointment. We said <span class="highlight">no to both</span>.</p>
+        <p>Every can is crafted with natural ingredients, <span class="highlight">zero added sugar</span>, and a flavor profile that actually delivers. No artificial sweeteners. No junk. Just bold, clean refreshment that makes you feel as good as it tastes.</p>
+        <p>We're launching <span class="highlight">soon</span>, and we want you to be the first to taste the difference.</p>
+      </div>
+      <div class="about-stats reveal-right">
+        <div class="about-stat"><div class="big">0g</div><div class="lbl">Added Sugar</div></div>
+        <div class="about-stat"><div class="big">5</div><div class="lbl">Calories</div></div>
+        <div class="about-stat"><div class="big">100%</div><div class="lbl">Natural Flavors</div></div>
+        <div class="about-stat"><div class="big">3</div><div class="lbl">Simple Ingredients</div></div>
+      </div>
+    </div>
+    <div class="process reveal">
+      <div class="process-step"><div class="num">1</div><h4>Source</h4><p>We source the finest natural ingredients from around the world.</p></div>
+      <div class="process-step"><div class="num">2</div><h4>Craft</h4><p>Small-batch brewing unlocks bold, clean flavor profiles.</p></div>
+      <div class="process-step"><div class="num">3</div><h4>Can</h4><p>Sealed fresh with zero sugar and nothing artificial.</p></div>
+    </div>
+  </section>
+  <section id="flavors">
+    <h2 class="split-title reveal"><span class="a">our</span> <span class="b">flavors</span></h2>
+    <p class="section-sub reveal">Zero sugar &bull; Zero guilt &bull; Maximum taste</p>
+    <div class="divider reveal"></div>
+    <div class="flavor-ticker-wrap reveal">
+      <div class="flavor-ticker">
+        <div class="flavor-ticker-track" id="tickerTrack">
+          <a href="product.html?id=1" class="flavor-card" style="--accent: #f0e68c;text-decoration:none;color:inherit;display:block;"><div class="img-wrap"><img src="LEMON.png" alt="Lemon" loading="lazy"></div><h3 style="color:#f0e68c;">Lemon</h3><p class="desc">Bright lemon &amp; lime with a hint of mint &ndash; crisp, clean, and electrifying.</p></a>
+          <a href="product.html?id=2" class="flavor-card" style="--accent: #8a6cf5;text-decoration:none;color:inherit;display:block;"><div class="img-wrap"><img src="BLUEBERRY.png" alt="Blueberry" loading="lazy"></div><h3 style="color:#8a6cf5;">Blueberry</h3><p class="desc">Deep berry blend with blackcurrant and a touch of elderflower.</p></a>
+          <a href="product.html?id=3" class="flavor-card" style="--accent: #ff9f43;text-decoration:none;color:inherit;display:block;"><div class="img-wrap"><img src="MANGO.png" alt="Mango" loading="lazy"></div><h3 style="color:#ff9f43;">Mango</h3><p class="desc">Ripe mango &amp; passionfruit &ndash; a tropical wave that hits different.</p></a>
+          <a href="product.html?id=4" class="flavor-card" style="--accent: #ff6b6b;text-decoration:none;color:inherit;display:block;"><div class="img-wrap"><img src="PINEAPPLE.png" alt="Pineapple" loading="lazy"></div><h3 style="color:#ff6b6b;">Pineapple</h3><p class="desc">Tangy pineapple with a subtle ginger kick. Bold &amp; refreshing.</p></a>
+          <a href="product.html?id=5" class="flavor-card" style="--accent: #ff4d6d;text-decoration:none;color:inherit;display:block;"><div class="img-wrap"><img src="STRAWBERRY.png" alt="Strawberry" loading="lazy"></div><h3 style="color:#ff4d6d;">Strawberry</h3><p class="desc">Sweet ripe strawberries with a creamy finish. Irresistibly smooth.</p></a>
+          <a href="product.html?id=6" class="flavor-card" style="--accent: #7bc67e;text-decoration:none;color:inherit;display:block;"><div class="img-wrap"><img src="WATERMELON LIME.png" alt="Watermelon Lime" loading="lazy"></div><h3 style="color:#7bc67e;">Watermelon Lime</h3><p class="desc">Juicy watermelon zested with fresh lime. Summer in every sip.</p></a>
+          <a href="product.html?id=7" class="flavor-card" style="--accent: #ffe135;text-decoration:none;color:inherit;display:block;"><div class="img-wrap"><img src="BANANA.png" alt="Banana" loading="lazy"></div><h3 style="color:#ffe135;">Banana</h3><p class="desc">Creamy ripe banana with a smooth, mellow sweetness.</p></a>
+          <a href="product.html?id=8" class="flavor-card" style="--accent: #7ed957;text-decoration:none;color:inherit;display:block;"><div class="img-wrap"><img src="CRISPAPPLE.png" alt="Crisp Apple" loading="lazy"></div><h3 style="color:#7ed957;">Crisp Apple</h3><p class="desc">Fresh-picked apple with a sharp, refreshing bite.</p></a>
+          <a href="product.html?id=9" class="flavor-card" style="--accent: #f7a845;text-decoration:none;color:inherit;display:block;"><div class="img-wrap"><img src="MIXEDFRUIT.png" alt="Mixed Fruit" loading="lazy"></div><h3 style="color:#f7a845;">Mixed Fruit</h3><p class="desc">A vibrant blend of tropical and citrus fruits in every sip.</p></a>
+          <a href="product.html?id=10" class="flavor-card" style="--accent: #ff8c42;text-decoration:none;color:inherit;display:block;"><div class="img-wrap"><img src="ORANGE.png" alt="Orange" loading="lazy"></div><h3 style="color:#ff8c42;">Orange</h3><p class="desc">Bold, tangy orange with a bright citrus finish.</p></a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="story" class="desc-section">
+    <h2 class="split-title reveal"><span class="a">our</span> <span class="b">story</span></h2>
+    <p class="section-sub reveal">What makes PETRIX different</p>
+    <div class="divider reveal"></div>
+    <div class="desc-content reveal">
+      <p><strong>PETRIX Zero Sugar &ndash; Guilt‑Free Refreshment, Full‑On Flavour</strong></p>
+      <p><strong>Zero sugar. Zero compromise.</strong><br>We stripped away every gram of added sugar and replaced it with nature's own boldness &ndash; sun‑ripened fruit, crisp botanicals, and a refreshing spark that hits exactly right. PETRIX Zero Sugar delivers all the mouth‑watering taste you crave without the sugar spike or the empty calories.</p>
+      <p><strong>Naturally delicious, brilliantly clean.</strong><br>Every can is a celebration of real fruit extracts and plant‑based sweetness. We never touch artificial sweeteners, synthetic colours, or preservatives. The result? A crystal‑clear, crisp taste that tastes like the fruit itself.</p>
+      <p><strong>Your all‑day companion, redefined.</strong><br>PETRIX Zero Sugar was made for the way you actually live. It's the cold can in your bag when the afternoon hits hard, the clink of ice on a hot patio, the perfectly light mixer for your evening wind‑down.</p>
+      <p><strong>Why you'll love it:</strong></p>
+      <span class="highlight-block">🚫 0 g added sugar &ndash; pure fruit‑forward taste, no empty sweetness.</span>
+      <span class="highlight-block">🌱 Naturally sweetened &ndash; only real fruit extracts &amp; plant‑based magic.</span>
+      <span class="highlight-block">✨ No artificial flavours, colours, or preservatives &ndash; what you taste is what nature intended.</span>
+      <span class="highlight-block">💧 Light, crisp, and utterly refreshing &ndash; never syrupy or sticky.</span>
+      <span class="highlight-block">♻️ Guilt‑free sipping &ndash; low‑calorie, vegan‑friendly, and packaged in infinitely recyclable cans.</span>
+      <p style="margin-top:2rem;">One sip, and you'll wonder why you ever settled for anything less. Welcome to the future of refreshment.</p>
+    </div>
+  </section>
+  <section id="contact">
+    <h2 class="split-title reveal"><span class="a">con</span><span class="b">tact</span></h2>
+    <p class="section-sub reveal">We'd love to hear from you</p>
+    <div class="divider reveal"></div>
+    <div class="contact-wrap">
+      <div class="contact-info reveal-left">
+        <p>Email us directly at <strong style="color:#FD4411;">syedalimohammd101@gmail.com</strong>. We reply within 24 hours.</p>
+        <div class="contact-item"><div class="icon">✉</div><div class="info"><strong>Email</strong>syedalimohammd101@gmail.com <span style="font-size:0.65rem;color:#FD4411;cursor:pointer;" onclick="copyEmail()">[copy]</span></div></div>
+        <div class="contact-item"><div class="icon">📞</div><div class="info"><strong>Phone</strong>+91 8840705996</div></div>
+        <div class="contact-item"><div class="icon">📍</div><div class="info"><strong>Location</strong>Varanasi</div></div>
+        <a href="mailto:syedalimohammd101@gmail.com" class="email-badge">✉ Send Direct Email &rarr;</a>
+        <p class="copy-feedback" id="copyFeedback">✓ Email copied to clipboard!</p>
+      </div>
+      <form class="contact-form reveal-right" id="contactForm">
+        <div class="form-group"><label>Name</label><input type="text" id="c-name" placeholder="Your name" required></div>
+        <div class="form-group"><label>Email</label><input type="email" id="c-email" placeholder="you@example.com" required></div>
+        <div class="form-group"><label>Message</label><textarea id="c-msg" placeholder="Tell us what's on your mind..." required></textarea></div>
+        <button type="submit" class="submit-btn">Send Message</button>
+        <p class="form-hint">We'll never share your info.</p>
+      </form>
+    </div>
+  </section>
+  <section style="min-height:auto;padding:3rem 2rem;text-align:center;">
+    <h1 class="reveal" style="font-family:'Anton',sans-serif;font-weight:900;text-transform:uppercase;"><span style="color:white;">Coming Soon.</span><br><span style="color:#FD4411;">Zero Sugar.</span></h1>
+    <p class="hero-tagline reveal" style="margin-top:0.6rem;">Sparkling refreshment &bull; 0g sugar</p>
+    <div class="flavor-tags reveal" style="margin-top:2rem;">
+      <span class="flavor-tag">Lemon</span><span class="flavor-tag">Blueberry</span><span class="flavor-tag">Mango</span><span class="flavor-tag">Pineapple</span><span class="flavor-tag">Strawberry</span><span class="flavor-tag">Watermelon Lime</span><span class="flavor-tag">Banana</span><span class="flavor-tag">Crisp Apple</span><span class="flavor-tag">Mixed Fruit</span><span class="flavor-tag">Orange</span>
+    </div>
+  </section>
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="#home">Home</a>
+        <a href="#about">About Us</a>
+        <a href="#flavors">Flavors</a>
+        <a href="#story">Our Story</a>
+        <a href="shop.html">Shop</a>
+      </div>
+      <div class="footer-col">
+        <h4>Policies</h4>
+        <a onclick="openPolicy('privacy')">Privacy Policy</a>
+        <a onclick="openPolicy('terms')">Terms & Conditions</a>
+        <a onclick="openPolicy('refund')">Refund & Cancellation</a>
+        <a onclick="openPolicy('shipping')">Shipping & Delivery</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <a href="mailto:syedalimohammd101@gmail.com">syedalimohammd101@gmail.com</a>
+        <a href="tel:+918840705996">+91 8840705996</a>
+        <a>Varanasi, India</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="social"><a href="#">Instagram</a><a href="#">Twitter</a><a href="#">TikTok</a><a href="#">YouTube</a></div>
+      <p class="legal-text">&copy; 2026 PETRIX Beverages Pvt. Ltd. All rights reserved.</p>
+    </div>
+  </footer>
+  <div class="policy-modal" id="policyModal">
+    <div class="policy-modal-content">
+      <button class="policy-close" onclick="closePolicy()">&times;</button>
+      <div id="policyBody"></div>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>
+    emailjs.init('D57voJ3NtiFg1g7bz');
+    const SERVICE_ID = 'service_fn265hi';
+    const CONTACT_TEMPLATE_ID = 'template_11digic';
+    const lb = document.getElementById('liquidBg');
+    for (let i = 0; i < 18; i++) { const el = document.createElement('div'); el.className = 'drip'; lb.appendChild(el); }
+    const hero = document.getElementById('home');
+    const heroWrap = hero.querySelector('.hero-img-wrap');
+    const heroImg = hero.querySelector('.hero-img-wrap img');
+    const heroOverlay = hero.querySelector('.hero-img-title');
+    const spacer = document.getElementById('hero-spacer');
+    const aboutSection = document.getElementById('about');
+    function updateHeroZoom() {
+      const viewH = window.innerHeight;
+      const scrollY = window.scrollY;
+      const progress = Math.min(scrollY / viewH, 1);
+      const zoomP = Math.min(progress / 0.5, 1);
+      const scale = 1 - zoomP * 0.5;
+      const moveP = Math.max((progress - 0.5) / 0.5, 0);
+      const translateY = -moveP * 100;
+      const br = Math.round(zoomP * 300);
+      heroImg.style.borderRadius = br + 'px';
+      heroOverlay.style.borderRadius = br + 'px';
+      const tf = 'translateY(' + translateY + 'vh) scale(' + scale + ')';
+      heroImg.style.transform = tf;
+      heroImg.style.opacity = 1;
+      heroOverlay.style.transform = tf;
+      heroOverlay.style.opacity = 1;
+      const fadeP = Math.max((progress - 0.6) / 0.4, 0);
+      hero.style.background = 'rgba(10,6,4,' + (1 - fadeP) + ')';
+      hero.style.pointerEvents = progress > 0.95 ? 'none' : 'auto';
+      hero.classList.add('fixed');
+      spacer.style.display = 'block';
+      spacer.style.height = viewH + 'px';
+      const aboutStart = window.innerWidth <= 700 ? 0.2 : 0.55;
+      const aboutP = Math.max((progress - aboutStart) / (1 - aboutStart), 0);
+      const aboutT = (1 - aboutP) * 100;
+      aboutSection.style.transform = 'translateY(' + aboutT + 'vh)';
+    }
+    window.addEventListener('scroll', updateHeroZoom);
+    updateHeroZoom();
+    const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+    const obs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.08 });
+    reveals.forEach(r => obs.observe(r));
+    const tickerTrack = document.getElementById('tickerTrack');
+    if (tickerTrack) {
+      const items = tickerTrack.querySelectorAll('.flavor-card');
+      items.forEach(item => tickerTrack.appendChild(item.cloneNode(true)));
+      let pos = 0, isDown = false, dragStartX, dragStartPos, running = true;
+      const speed = 0.8;
+      function tick() { if (!running) { requestAnimationFrame(tick); return; } pos -= speed; if (pos < -tickerTrack.scrollWidth / 2) pos += tickerTrack.scrollWidth / 2; tickerTrack.style.transform = 'translateX(' + pos + 'px)'; requestAnimationFrame(tick); }
+      requestAnimationFrame(tick);
+      const onStart = (x) => { isDown = true; running = false; dragStartX = x; dragStartPos = pos; };
+      const onEnd = () => { isDown = false; running = true; };
+      const onMove = (x) => { if (!isDown) return; pos = dragStartPos + (x - dragStartX); };
+      tickerTrack.addEventListener('mousedown', e => onStart(e.pageX));
+      tickerTrack.addEventListener('mouseleave', onEnd);
+      tickerTrack.addEventListener('mouseup', onEnd);
+      tickerTrack.addEventListener('mousemove', e => { if (isDown) { e.preventDefault(); onMove(e.pageX); } });
+      tickerTrack.addEventListener('touchstart', e => onStart(e.touches[0].pageX));
+      tickerTrack.addEventListener('touchend', onEnd);
+      tickerTrack.addEventListener('touchmove', e => onMove(e.touches[0].pageX));
+    }
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+    const toast = document.getElementById('toast');
+    function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 4000); }
+    function copyEmail() { navigator.clipboard.writeText('syedalimohammd101@gmail.com'); const fb = document.getElementById('copyFeedback'); fb.classList.add('show'); setTimeout(() => fb.classList.remove('show'), 2000); }
+    document.getElementById('contactForm').addEventListener('submit', async function(e) {
+      e.preventDefault(); const btn = this.querySelector('button'); btn.textContent = 'Sending...'; btn.disabled = true;
+      try { await emailjs.send(SERVICE_ID, CONTACT_TEMPLATE_ID, { name: document.getElementById('c-name').value, email: document.getElementById('c-email').value, message: document.getElementById('c-msg').value }); showToast('✉ Message sent!'); this.reset(); } catch { showToast('Could not send. Try the Direct Email button.'); }
+      btn.textContent = 'Send Message'; btn.disabled = false;
+    });
+    const policies = {
+      privacy: '<h2>Privacy <span>Policy</span></h2><p>Last updated: May 2026</p><h3>1. Information We Collect</h3><p>We collect information you provide directly, including name, email address, phone number, delivery address, and order history. We also automatically collect certain technical data such as IP address, browser type, device information, and browsing patterns through cookies and similar technologies.</p><h3>2. How We Use Your Information</h3><p>Your data is used to process and fulfill orders, communicate about products and promotions, improve our website experience, prevent fraud, and comply with legal obligations. We never sell your personal information to third parties.</p><h3>3. Data Sharing & Security</h3><p>We share data only with trusted service providers (payment processors, shipping partners, email services) strictly necessary for order fulfillment. All data is encrypted in transit and at rest using industry-standard SSL/TLS protocols.</p><h3>4. Your Rights</h3><p>You have the right to access, correct, delete, or export your personal data at any time. Contact us at syedalimohammd101@gmail.com to exercise these rights. We will respond within 30 days.</p><h3>5. Cookies</h3><p>We use essential cookies for cart functionality and analytics cookies to understand site usage. You can disable cookies in your browser settings, though some features may not work properly.</p>',
+      terms: '<h2>Terms & <span>Conditions</span></h2><p>Effective: May 2026</p><h3>1. Acceptance of Terms</h3><p>By accessing or using the PETRIX website, you agree to be bound by these Terms and Conditions. If you disagree with any part, you must discontinue use immediately.</p><h3>2. Product Information</h3><p>We strive for accuracy in product descriptions, pricing, and availability. However, we reserve the right to correct errors, update information, or cancel orders without prior notice. All images are for illustrative purposes.</p><h3>3. Orders & Payments</h3><p>Placing an order constitutes an offer to purchase. We reserve the right to refuse or cancel orders for any reason, including suspected fraud or pricing errors. Payments are processed securely through authorized gateways.</p><h3>4. Intellectual Property</h3><p>All content on this site, including logos, designs, text, graphics, and code, is the exclusive property of PETRIX and protected by copyright laws. Unauthorized reproduction is strictly prohibited.</p><h3>5. Limitation of Liability</h3><p>PETRIX shall not be liable for any indirect, incidental, or consequential damages arising from the use of our products or website. Our total liability shall not exceed the purchase price of the product.</p><h3>6. Governing Law</h3><p>These terms are governed by the laws of India. Any disputes shall be subject to the exclusive jurisdiction of courts in Varanasi, Uttar Pradesh.</p>',
+      refund: '<h2>Refund & <span>Cancellation</span></h2><p>Last updated: May 2026</p><h3>1. Order Cancellation</h3><p>Orders can be cancelled within 2 hours of placement by contacting our support team. Once an order is packed or shipped, cancellation is no longer possible.</p><h3>2. Refund Eligibility</h3><p>Refunds are issued only for: damaged or defective products received, incorrect items delivered, or orders cancelled within the allowed window. We do not offer refunds for change of mind or taste preferences.</p><h3>3. Refund Process</h3><p>Approved refunds are processed within 5-7 business days to the original payment method. You will receive an email confirmation once the refund is initiated. Bank processing times may vary.</p><h3>4. Claims & Documentation</h3><p>To file a claim, email us at syedalimohammd101@gmail.com within 48 hours of delivery with photos of the damaged product and your order ID. Claims submitted after this window may not be honored.</p><h3>5. Non-Refundable Items</h3><p>Custom or personalized orders, gift cards, and products purchased during promotional sales marked as "final sale" are not eligible for refunds.</p>',
+      shipping: '<h2>Shipping & <span>Delivery</span></h2><p>Last updated: May 2026</p><h3>1. Processing Time</h3><p>Orders are processed and packed within 24-48 hours of confirmation. You will receive a shipping confirmation email with tracking details once your order dispatches.</p><h3>2. Delivery Timeline</h3><p>Standard delivery takes 3-7 business days depending on your location. Metro cities typically receive orders within 3-5 days, while remote areas may take up to 7-10 days.</p><h3>3. Shipping Costs</h3><p>Free shipping on all orders above ₹500. Orders below ₹500 incur a flat shipping fee of ₹28. Shipping rates are calculated at checkout.</p><h3>4. Delivery Issues</h3><p>If your package is delayed, lost, or delivered damaged, contact us immediately with your tracking number. We will investigate and arrange a replacement or refund as appropriate.</p><h3>5. Address Accuracy</h3><p>Customers are responsible for providing accurate delivery addresses. PETRIX is not liable for delays or lost packages due to incorrect or incomplete address information provided at checkout.</p>'
+    };
+    function openPolicy(type) {
+      document.getElementById('policyBody').innerHTML = policies[type] || '';
+      document.getElementById('policyModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closePolicy() {
+      document.getElementById('policyModal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.getElementById('policyModal').addEventListener('click', function(e) { if (e.target === this) closePolicy(); });
+    const token = localStorage.getItem('petrixToken');
+    const user = localStorage.getItem('petrixUser');
+    const authItem = document.getElementById('authNavItem');
+    if (token && user) {
+      authItem.innerHTML = '<a href="profile.html" style="color:rgba(255,255,255,0.5);">Profile</a>';
+      const li = document.createElement('li');
+      li.innerHTML = '<a href="#" onclick="logout()" style="color:#FD4411;font-weight:700;">Logout</a>';
+      authItem.parentNode.insertBefore(li, authItem.nextSibling);
+    }
+    function logout() {
+      localStorage.removeItem('petrixToken');
+      localStorage.removeItem('petrixUser');
+      location.reload();
+    }
+  </script>
+</body>
+</html>

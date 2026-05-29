@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PETRIX — My Profile</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&family=Anton&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Poppins', sans-serif; background: #0a0604; color: white; min-height: 100vh; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0a0604; }
+    ::-webkit-scrollbar-thumb { background: #FD4411; border-radius: 10px; }
+    .liquid-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .drip { position: absolute; top: -60px; border-radius: 0 0 50% 50%; animation: dripFall linear infinite; opacity: 0.08; }
+    .drip:nth-child(1) { left: 3%; height: 180px; animation-duration: 6s; animation-delay: 0s; width: 8px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(2) { left: 10%; height: 260px; animation-duration: 8s; animation-delay: -1.5s; width: 12px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(3) { left: 18%; height: 140px; animation-duration: 5.5s; animation-delay: -3s; width: 7px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(4) { left: 25%; height: 220px; animation-duration: 7s; animation-delay: -0.5s; width: 10px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(5) { left: 33%; height: 160px; animation-duration: 6.5s; animation-delay: -4s; width: 9px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(6) { left: 40%; height: 280px; animation-duration: 9s; animation-delay: -2s; width: 14px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(7) { left: 48%; height: 190px; animation-duration: 6.2s; animation-delay: -5s; width: 8px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(8) { left: 55%; height: 240px; animation-duration: 7.8s; animation-delay: -1s; width: 11px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(9) { left: 62%; height: 130px; animation-duration: 5s; animation-delay: -3.5s; width: 6px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(10) { left: 70%; height: 200px; animation-duration: 7.2s; animation-delay: -4.5s; width: 10px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(11) { left: 77%; height: 300px; animation-duration: 8.5s; animation-delay: -0.8s; width: 13px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(12) { left: 84%; height: 170px; animation-duration: 5.8s; animation-delay: -2.5s; width: 8px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(13) { left: 90%; height: 230px; animation-duration: 7.5s; animation-delay: -5.5s; width: 11px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(14) { left: 96%; height: 150px; animation-duration: 6.8s; animation-delay: -3.2s; width: 7px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(15) { left: 15%; height: 100px; animation-duration: 4.8s; animation-delay: -6s; width: 6px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(16) { left: 50%; height: 120px; animation-duration: 5.2s; animation-delay: -7s; width: 5px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(17) { left: 72%; height: 90px; animation-duration: 4.5s; animation-delay: -4.8s; width: 6px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(18) { left: 35%; height: 110px; animation-duration: 5s; animation-delay: -6.5s; width: 5px; background: linear-gradient(180deg, transparent, #FD7744); }
+    @keyframes dripFall { 0% { transform: translateY(-100px); opacity: 0; } 10% { opacity: 0.1; } 90% { opacity: 0.1; } 100% { transform: translateY(100vh); opacity: 0; } }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; background: rgba(10,6,4,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(253,68,17,0.1); }
+    .logo { font-weight: 900; font-size: 1.3rem; text-transform: uppercase; letter-spacing: 3px; display: flex; align-items: center; gap: 10px; }
+    .logo .pet { color: white; } .logo .rix { color: #FD4411; }
+    .back-btn { font-size: 1.1rem; color: #FD4411; text-decoration: none; font-weight: 900; margin-right: 10px; text-shadow: 0 0 2px #FD4411; }
+
+    .container { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; padding: 6rem 1.5rem 3rem; }
+    .page-title { font-family: 'Anton', sans-serif; font-size: 2rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 0.3rem; }
+    .page-title span { color: #FD4411; }
+    .page-sub { color: rgba(255,255,255,0.35); font-size: 0.85rem; margin-bottom: 2rem; }
+
+    .card { background: rgba(255,255,255,0.02); border-radius: 24px; padding: 2rem; border: 1px solid rgba(253,68,17,0.08); margin-bottom: 1.5rem; }
+    .card h2 { font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1.2rem; display: flex; align-items: center; justify-content: space-between; }
+    .card h2 .action-btn { font-size: 0.7rem; color: #FD4411; cursor: pointer; background: none; border: none; font-family: 'Poppins', sans-serif; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; }
+    .card h2 .action-btn:hover { color: #FD7744; }
+
+    .form-group { margin-bottom: 1rem; }
+    .form-group label { display: block; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; color: rgba(255,255,255,0.35); margin-bottom: 0.4rem; font-weight: 600; }
+    .form-group input { width: 100%; padding: 0.85rem 1rem; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(253,68,17,0.12); color: white; font-family: 'Poppins', sans-serif; font-size: 0.85rem; outline: none; transition: border 0.3s; }
+    .form-group input:focus { border-color: #FD4411; background: rgba(255,255,255,0.05); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
+
+    .save-btn { padding: 0.9rem 2.5rem; border: none; border-radius: 14px; background: #FD4411; color: white; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: all 0.3s; box-shadow: 0 0 30px rgba(253,68,17,0.18); }
+    .save-btn:hover { transform: scale(1.03); box-shadow: 0 0 60px rgba(253,68,17,0.4); }
+    .save-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+    .save-btn:active { transform: scale(0.95); }
+
+    .address-card { background: rgba(255,255,255,0.02); border-radius: 16px; padding: 1.2rem; border: 1px solid rgba(253,68,17,0.08); margin-bottom: 0.8rem; position: relative; }
+    .address-card .addr-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: #FD4411; font-weight: 700; margin-bottom: 4px; }
+    .address-card .addr-text { font-size: 0.82rem; color: rgba(255,255,255,0.55); line-height: 1.5; }
+    .address-card .addr-actions { position: absolute; top: 1rem; right: 1rem; display: flex; gap: 0.5rem; }
+    .address-card .addr-actions button { background: none; border: none; color: rgba(255,255,255,0.2); cursor: pointer; font-size: 0.9rem; transition: color 0.3s; font-family: 'Poppins', sans-serif; }
+    .address-card .addr-actions button:hover { color: #FD4411; }
+
+    .add-addr-btn { width: 100%; padding: 0.9rem; border-radius: 14px; border: 1px dashed rgba(253,68,17,0.2); background: transparent; color: rgba(253,68,17,0.6); font-family: 'Poppins', sans-serif; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.3s; margin-top: 0.5rem; }
+    .add-addr-btn:hover { border-color: #FD4411; color: #FD4411; background: rgba(253,68,17,0.04); }
+
+    .addr-form { display: none; background: rgba(255,255,255,0.02); border-radius: 16px; padding: 1.2rem; border: 1px solid rgba(253,68,17,0.12); margin-bottom: 0.8rem; }
+    .addr-form.open { display: block; }
+    .addr-form .form-group { margin-bottom: 0.8rem; }
+    .addr-form .form-group input { padding: 0.7rem 0.9rem; font-size: 0.8rem; }
+    .addr-form .addr-form-actions { display: flex; gap: 0.8rem; margin-top: 0.5rem; }
+    .addr-form .addr-form-actions button { flex: 1; padding: 0.7rem; border-radius: 10px; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.3s; border: none; }
+    .addr-form .addr-form-actions .save-addr { background: #FD4411; color: white; }
+    .addr-form .addr-form-actions .save-addr:hover { background: #e33d0f; }
+    .addr-form .addr-form-actions .cancel-addr { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.4); }
+    .addr-form .addr-form-actions .cancel-addr:hover { background: rgba(255,255,255,0.1); }
+
+    .no-addr { text-align: center; color: rgba(255,255,255,0.2); font-size: 0.82rem; padding: 1.5rem 0; }
+
+    .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px); z-index: 200; padding: 1rem 2rem; border-radius: 16px; background: rgba(253,68,17,0.1); border: 1px solid rgba(253,68,17,0.25); backdrop-filter: blur(16px); color: white; font-size: 0.85rem; transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease; opacity: 0; pointer-events: none; max-width: 90vw; }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    .success-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(253,68,17,0.08); border: 1px solid rgba(253,68,17,0.15); padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.72rem; color: #FD7744; margin-top: 1rem; }
+
+    @media (max-width: 700px) {
+      nav { padding: 0.8rem 1rem; }
+      .container { padding: 5rem 1rem 2rem; }
+      .card { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="liquid-bg" id="liquidBg"></div>
+  <nav>
+    <div class="logo"><a href="index.html" style="color:inherit;text-decoration:none;display:flex;align-items:center;"><span class="back-btn">❮</span><span class="pet">PET</span><span class="rix">RIX</span></a></div>
+    <a href="login.html" id="profileAuthLink" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.78rem;text-transform:uppercase;letter-spacing:2px;font-weight:600;">Log In</a>
+  </nav>
+  <div class="container">
+    <h1 class="page-title">My <span>Profile</span></h1>
+    <p class="page-sub">Manage your saved details for faster checkout</p>
+
+    <div class="card">
+      <h2>Personal Info</h2>
+      <div class="form-group"><label>Full Name</label><input type="text" id="fullName" placeholder="Your full name"></div>
+      <div class="form-group"><label>Phone Number</label><input type="tel" id="phone" placeholder="+91 98765 43210"></div>
+      <button class="save-btn" id="savePersonal">Save Details</button>
+      <div id="savedBadge" class="success-badge" style="display:none;">✓ Saved</div>
+    </div>
+
+    <div class="card">
+      <h2>Saved Addresses <button class="action-btn" id="showAddrForm">+ Add New</button></h2>
+      <div id="addressList"></div>
+      <div class="addr-form" id="addrForm">
+        <div class="form-group"><label>Label</label><input type="text" id="addrLabel" placeholder="Home / Work / Other"></div>
+        <div class="form-group"><label>Address Line</label><input type="text" id="addrLine" placeholder="House/Flat, Street, Area"></div>
+        <div class="form-row">
+          <div class="form-group"><label>City</label><input type="text" id="addrCity" placeholder="City"></div>
+          <div class="form-group"><label>State</label><input type="text" id="addrState" placeholder="State"></div>
+        </div>
+        <div class="form-group"><label>Pincode</label><input type="text" id="addrPincode" placeholder="110001"></div>
+        <div class="addr-form-actions">
+          <button class="cancel-addr" id="cancelAddr">Cancel</button>
+          <button class="save-addr" id="saveAddr">Save Address</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:0.5rem;">
+      <a href="index.html" style="color:rgba(255,255,255,0.3);text-decoration:none;font-size:0.78rem;transition:color 0.3s;">&larr; Back to Home</a>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+  <script>
+    const API = '/auth';
+    const lb = document.getElementById('liquidBg');
+    for (let i = 0; i < 18; i++) { const el = document.createElement('div'); el.className = 'drip'; lb.appendChild(el); }
+
+    const toast = document.getElementById('toast');
+    function showToast(m) { toast.textContent = m; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 3000); }
+
+    const token = localStorage.getItem('petrixToken');
+    if (!token) { window.location.href = 'login.html?redirect=profile.html'; }
+
+    let addresses = [];
+    let editingIdx = -1;
+
+    // Auth link in nav
+    const authLink = document.getElementById('profileAuthLink');
+    const user = localStorage.getItem('petrixUser');
+    if (token && user) {
+      authLink.textContent = 'Logout';
+      authLink.href = '#';
+      authLink.onclick = function(e) { e.preventDefault(); localStorage.removeItem('petrixToken'); localStorage.removeItem('petrixUser'); location.reload(); };
+    }
+
+    async function loadProfile() {
+      try {
+        const res = await fetch(API + '/profile', { headers: { 'Authorization': 'Bearer ' + token } });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error);
+        document.getElementById('fullName').value = data.profile.full_name || '';
+        document.getElementById('phone').value = data.profile.phone || '';
+        addresses = data.profile.addresses || [];
+        renderAddresses();
+      } catch (e) {
+        if (e.message === 'Invalid token' || e.message === 'No token') {
+          localStorage.removeItem('petrixToken'); localStorage.removeItem('petrixUser');
+          window.location.href = 'login.html?redirect=profile.html';
+        }
+        showToast('Failed to load profile');
+      }
+    }
+
+    function renderAddresses() {
+      const list = document.getElementById('addressList');
+      if (!addresses.length) { list.innerHTML = '<div class="no-addr">No saved addresses yet. Click "+ Add New" to add one.</div>'; return; }
+      list.innerHTML = addresses.map((a, i) => `
+        <div class="address-card">
+          <div class="addr-label">${a.label || 'Address'}</div>
+          <div class="addr-text">${a.line}, ${a.city}, ${a.state} - ${a.pincode}</div>
+          <div class="addr-actions">
+            <button onclick="editAddress(${i})" title="Edit">✎</button>
+            <button onclick="deleteAddress(${i})" title="Delete">✕</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function editAddress(i) {
+      editingIdx = i;
+      const a = addresses[i];
+      document.getElementById('addrLabel').value = a.label || '';
+      document.getElementById('addrLine').value = a.line || '';
+      document.getElementById('addrCity').value = a.city || '';
+      document.getElementById('addrState').value = a.state || '';
+      document.getElementById('addrPincode').value = a.pincode || '';
+      document.getElementById('addrForm').classList.add('open');
+      document.getElementById('saveAddr').textContent = 'Update Address';
+    }
+
+    function deleteAddress(i) {
+      addresses.splice(i, 1);
+      renderAddresses();
+      saveAddresses();
+    }
+
+    document.getElementById('showAddrForm').addEventListener('click', () => {
+      editingIdx = -1;
+      document.getElementById('addrLabel').value = '';
+      document.getElementById('addrLine').value = '';
+      document.getElementById('addrCity').value = '';
+      document.getElementById('addrState').value = '';
+      document.getElementById('addrPincode').value = '';
+      document.getElementById('saveAddr').textContent = 'Save Address';
+      document.getElementById('addrForm').classList.add('open');
+    });
+
+    document.getElementById('cancelAddr').addEventListener('click', () => {
+      document.getElementById('addrForm').classList.remove('open');
+    });
+
+    document.getElementById('saveAddr').addEventListener('click', async () => {
+      const label = document.getElementById('addrLabel').value.trim();
+      const line = document.getElementById('addrLine').value.trim();
+      const city = document.getElementById('addrCity').value.trim();
+      const state = document.getElementById('addrState').value.trim();
+      const pincode = document.getElementById('addrPincode').value.trim();
+      if (!line || !city || !state || !pincode) { showToast('Please fill all address fields'); return; }
+      const addr = { label: label || 'Address', line, city, state, pincode };
+      if (editingIdx >= 0) { addresses[editingIdx] = addr; } else { addresses.push(addr); }
+      renderAddresses();
+      document.getElementById('addrForm').classList.remove('open');
+      await saveAddresses();
+    });
+
+    async function saveAddresses() {
+      try {
+        await fetch(API + '/profile', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+          body: JSON.stringify({
+            full_name: document.getElementById('fullName').value,
+            phone: document.getElementById('phone').value,
+            addresses
+          })
+        });
+      } catch (e) { showToast('Failed to save'); }
+    }
+
+    document.getElementById('savePersonal').addEventListener('click', async () => {
+      const btn = document.getElementById('savePersonal');
+      btn.textContent = 'Saving...';
+      btn.disabled = true;
+      try {
+        await fetch(API + '/profile', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+          body: JSON.stringify({
+            full_name: document.getElementById('fullName').value,
+            phone: document.getElementById('phone').value,
+            addresses
+          })
+        });
+        const badge = document.getElementById('savedBadge');
+        badge.style.display = 'inline-flex';
+        setTimeout(() => { badge.style.display = 'none'; }, 3000);
+        showToast('Profile saved!');
+      } catch (e) { showToast('Failed to save'); }
+      btn.textContent = 'Save Details';
+      btn.disabled = false;
+    });
+
+    // Check if this is initial setup after signup
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('setup') === '1') {
+      const banner = document.createElement('div');
+      banner.style.cssText = 'background:rgba(253,68,17,0.08);border:1px solid rgba(253,68,17,0.2);border-radius:14px;padding:1.2rem;margin-bottom:1.5rem;text-align:center;';
+      banner.innerHTML = '<strong style="color:#FD4411;">Welcome!</strong> Fill in your details below so we can speed up your checkout.';
+      document.querySelector('.container').insertBefore(banner, document.querySelector('.container').children[2]);
+    }
+
+    loadProfile();
+  </script>
+</body>
+</html>

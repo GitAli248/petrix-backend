@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PETRIX — Product</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&family=Anton&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Poppins', sans-serif; background: #0a0604; color: white; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; background: rgba(10,6,4,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(253,68,17,0.1); }
+    .logo { font-weight: 900; font-size: 1.3rem; text-transform: uppercase; letter-spacing: 3px; display: flex; align-items: center; }
+    .logo .pet { color: white; } .logo .rix { color: #FD4411; }
+    .back-btn { font-size: 1.1rem; color: #FD4411; text-decoration: none; font-weight: 900; margin-right: 10px; text-shadow: 0 0 2px #FD4411; }
+    .nav-cart { display: flex; align-items: center; gap: 6px; color: white; text-decoration: none; font-size: 0.85rem; font-weight: 600; }
+    .nav-cart span { background: #FD4411; color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; }
+    .container { width: 100%; max-width: 1000px; margin-top: 6rem; padding: 0 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    @media (max-width: 700px) { .container { grid-template-columns: 1fr; gap: 2rem; } }
+    .prod-img { display: flex; align-items: center; justify-content: center; padding: 3rem; background: rgba(255,255,255,0.02); border-radius: 28px; border: 1px solid rgba(253,68,17,0.08); min-height: 350px; }
+    .prod-img img { max-width: 80%; max-height: 320px; object-fit: contain; border-radius: 20px; }
+    .prod-info h1 { font-family: 'Anton', sans-serif; font-size: 2.5rem; text-transform: uppercase; letter-spacing: 2px; }
+    .prod-info .tagline { color: rgba(255,255,255,0.4); font-size: 0.9rem; margin: 0.5rem 0 1rem; line-height: 1.6; }
+    .prod-info .price { font-size: 2rem; font-weight: 900; color: #FD4411; margin-bottom: 0.3rem; }
+    .prod-info .price .orig { font-size: 1.2rem; color: rgba(255,255,255,0.2); text-decoration: line-through; margin-left: 8px; font-weight: 400; }
+    .prod-info .desc { color: rgba(255,255,255,0.55); line-height: 1.8; font-size: 0.9rem; margin: 1.5rem 0; }
+    .detail-block { margin-bottom: 1rem; padding: 1rem; background: rgba(255,255,255,0.02); border-radius: 14px; border: 1px solid rgba(253,68,17,0.06); }
+    .detail-block strong { display: block; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; color: #FD4411; margin-bottom: 4px; }
+    .detail-block span { font-size: 0.82rem; color: rgba(255,255,255,0.6); line-height: 1.5; }
+    .prod-info .actions { display: flex; gap: 0.8rem; margin-top: 1.5rem; }
+    .prod-info .actions button, .prod-info .actions a { flex: 1; padding: 0.9rem; border-radius: 14px; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.3s; border: none; text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center; }
+    .prod-info .actions .add { background: rgba(253,68,17,0.1); color: #FD4411; border: 1px solid rgba(253,68,17,0.2); }
+    .prod-info .actions .add:hover { background: rgba(253,68,17,0.2); }
+    .prod-info .actions .buy { background: #FD4411; color: white; }
+    .prod-info .actions .buy:hover { background: #e33d0f; }
+
+    .reviews { max-width: 1000px; width: 100%; margin: 3rem auto; padding: 0 2rem; }
+    .reviews h2 { font-family: 'Anton', sans-serif; font-size: 1.5rem; text-transform: uppercase; margin-bottom: 1.5rem; }
+    .reviews h2 span { color: #FD4411; }
+    .review-form { background: rgba(255,255,255,0.02); border-radius: 20px; padding: 2rem; border: 1px solid rgba(253,68,17,0.08); margin-bottom: 2rem; }
+    .review-form h3 { font-size: 1rem; font-weight: 700; margin-bottom: 1rem; }
+    .review-form .rf-row { display: flex; gap: 1rem; margin-bottom: 1rem; }
+    @media (max-width: 500px) { .review-form .rf-row { flex-direction: column; } }
+    .review-form input, .review-form textarea { width: 100%; padding: 0.8rem 1rem; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(253,68,17,0.1); color: white; font-family: 'Poppins', sans-serif; font-size: 0.85rem; outline: none; transition: border 0.3s; }
+    .review-form input:focus, .review-form textarea:focus { border-color: #FD4411; }
+    .review-form textarea { resize: vertical; min-height: 80px; }
+    .review-form .stars { display: flex; gap: 4px; margin-bottom: 1rem; }
+    .review-form .stars span { font-size: 1.5rem; cursor: pointer; color: rgba(255,255,255,0.15); transition: color 0.2s; }
+    .review-form .stars span.active { color: #FD4411; }
+    .review-form .submit-r { padding: 0.8rem 2rem; border-radius: 12px; background: #FD4411; color: white; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.3s; border: none; }
+    .review-form .submit-r:hover { background: #e33d0f; }
+    .review-list { display: flex; flex-direction: column; gap: 1rem; }
+    .review-card { padding: 1.2rem 1.5rem; background: rgba(255,255,255,0.02); border-radius: 16px; border: 1px solid rgba(253,68,17,0.05); }
+    .review-card .rc-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+    .review-card .rc-head .name { font-weight: 700; font-size: 0.9rem; }
+    .review-card .rc-head .rc-stars { color: #FD4411; font-size: 0.9rem; }
+    .review-card .rc-date { font-size: 0.65rem; color: rgba(255,255,255,0.25); }
+    .review-card .rc-text { font-size: 0.82rem; color: rgba(255,255,255,0.55); margin-top: 4px; line-height: 1.5; }
+    .no-reviews { text-align: center; color: rgba(255,255,255,0.2); padding: 2rem 0; font-size: 0.85rem; }
+    .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px); z-index: 300; padding: 1rem 2rem; border-radius: 16px; background: rgba(253,68,17,0.12); border: 1px solid rgba(253,68,17,0.25); backdrop-filter: blur(16px); color: white; font-size: 0.85rem; transition: transform 0.5s ease, opacity 0.5s ease; opacity: 0; pointer-events: none; max-width: 90vw; }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    .liquid-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .drip { position: absolute; top: -60px; border-radius: 0 0 50% 50%; animation: dripFall linear infinite; opacity: 0.08; }
+    .drip:nth-child(1) { left: 3%; height: 180px; animation-duration: 6s; animation-delay: 0s; width: 8px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(2) { left: 10%; height: 260px; animation-duration: 8s; animation-delay: -1.5s; width: 12px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(3) { left: 18%; height: 140px; animation-duration: 5.5s; animation-delay: -3s; width: 7px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(4) { left: 25%; height: 220px; animation-duration: 7s; animation-delay: -0.5s; width: 10px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(5) { left: 33%; height: 160px; animation-duration: 6.5s; animation-delay: -4s; width: 9px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(6) { left: 40%; height: 280px; animation-duration: 9s; animation-delay: -2s; width: 14px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(7) { left: 48%; height: 190px; animation-duration: 6.2s; animation-delay: -5s; width: 8px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(8) { left: 55%; height: 240px; animation-duration: 7.8s; animation-delay: -1s; width: 11px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(9) { left: 62%; height: 130px; animation-duration: 5s; animation-delay: -3.5s; width: 6px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(10) { left: 70%; height: 200px; animation-duration: 7.2s; animation-delay: -4.5s; width: 10px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(11) { left: 77%; height: 300px; animation-duration: 8.5s; animation-delay: -0.8s; width: 13px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(12) { left: 84%; height: 170px; animation-duration: 5.8s; animation-delay: -2.5s; width: 8px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(13) { left: 90%; height: 230px; animation-duration: 7.5s; animation-delay: -5.5s; width: 11px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(14) { left: 96%; height: 150px; animation-duration: 6.8s; animation-delay: -3.2s; width: 7px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(15) { left: 15%; height: 100px; animation-duration: 4.8s; animation-delay: -6s; width: 6px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(16) { left: 50%; height: 120px; animation-duration: 5.2s; animation-delay: -7s; width: 5px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(17) { left: 72%; height: 90px; animation-duration: 4.5s; animation-delay: -4.8s; width: 6px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(18) { left: 35%; height: 110px; animation-duration: 5s; animation-delay: -6.5s; width: 5px; background: linear-gradient(180deg, transparent, #FD7744); }
+    @keyframes dripFall { 0% { transform: translateY(-100px); opacity: 0; } 10% { opacity: 0.1; } 90% { opacity: 0.1; } 100% { transform: translateY(100vh); opacity: 0; } }
+  </style>
+</head>
+<body>
+  <div class="liquid-bg" id="liquidBg"></div>
+  <nav>
+    <div class="logo"><a href="shop.html" style="color:inherit;text-decoration:none;display:flex;align-items:center;"><span class="back-btn">❮</span> <span class="pet">PET</span><span class="rix">RIX</span></a></div>
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <a href="login.html" id="prodAuthLink" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.78rem;text-transform:uppercase;letter-spacing:2px;font-weight:600;">Log In</a>
+      <a href="shop.html" class="nav-cart">🛒 Cart</a>
+    </div>
+  </nav>
+
+  <div class="container" id="productContainer"></div>
+
+  <div class="reviews" id="reviewsSection">
+    <h2>Customer <span>Reviews</span></h2>
+    <div class="review-form">
+      <h3>Write a Review</h3>
+      <div class="rf-row">
+        <input type="text" id="r-name" placeholder="Your name" style="flex:1;">
+        <input type="text" id="r-title" placeholder="Review title (optional)" style="flex:1;">
+      </div>
+      <div class="stars" id="starPicker">
+        <span data-star="1">★</span><span data-star="2">★</span><span data-star="3">★</span><span data-star="4">★</span><span data-star="5">★</span>
+      </div>
+      <textarea id="r-text" placeholder="Share your thoughts about this flavor..."></textarea>
+      <button class="submit-r" id="submitReview">Submit Review</button>
+    </div>
+    <div class="review-list" id="reviewList"><div class="no-reviews">No reviews yet. Be the first!</div></div>
+  </div>
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const products = [
+      { id: 1, name: 'Lemon', img: 'LEMON.png', price: 20, category: 'citrus', color: '#f0e68c', tagline: 'A zesty wake-up call in every sip.',
+        desc: 'Bright lemon & lime with a hint of mint – crisp, clean, and electrifying.',
+        ingredients: 'Sparkling water, natural lemon extract, lime juice, mint extract, stevia, citric acid.',
+        nutrition: { energy: '8 kcal', sugar: '0g', carbs: '2g', sodium: '10mg' },
+        flavor: 'Zesty, tangy, refreshingly tart with a cool minty finish.' },
+      { id: 2, name: 'Blueberry', img: 'BLUEBERRY.png', price: 20, category: 'berry', color: '#8a6cf5', tagline: 'Bold, deep, and unapologetically fruity.',
+        desc: 'Deep berry blend with blackcurrant and a touch of elderflower.',
+        ingredients: 'Sparkling water, blueberry concentrate, blackcurrant extract, elderflower, stevia, citric acid.',
+        nutrition: { energy: '9 kcal', sugar: '0g', carbs: '2g', sodium: '8mg' },
+        flavor: 'Rich, jammy berry notes with a floral elderflower undertone.' },
+      { id: 3, name: 'Mango', img: 'MANGO.png', price: 20, category: 'tropical', color: '#ff9f43', tagline: 'Tropical sunshine in every can.',
+        desc: 'Ripe mango & passionfruit – a tropical wave that hits different.',
+        ingredients: 'Sparkling water, mango puree, passionfruit extract, stevia, citric acid.',
+        nutrition: { energy: '10 kcal', sugar: '0g', carbs: '2.5g', sodium: '6mg' },
+        flavor: 'Sweet, luscious mango upfront with a tangy passionfruit twist.' },
+      { id: 4, name: 'Pineapple', img: 'PINEAPPLE.png', price: 20, category: 'tropical', color: '#ff6b6b', tagline: 'Sweet heat with a tropical punch.',
+        desc: 'Tangy pineapple with a subtle ginger kick. Bold & refreshing.',
+        ingredients: 'Sparkling water, pineapple concentrate, ginger extract, stevia, citric acid.',
+        nutrition: { energy: '8 kcal', sugar: '0g', carbs: '2g', sodium: '7mg' },
+        flavor: 'Tropical pineapple sweetness with a warm, spicy ginger finish.' },
+      { id: 5, name: 'Strawberry', img: 'STRAWBERRY.png', price: 20, category: 'berry', color: '#ff4d6d', tagline: 'Berry bliss in every bubble.',
+        desc: 'Sweet ripe strawberries with a creamy finish. Irresistibly smooth.',
+        ingredients: 'Sparkling water, strawberry concentrate, vanilla extract, stevia, citric acid.',
+        nutrition: { energy: '9 kcal', sugar: '0g', carbs: '2g', sodium: '5mg' },
+        flavor: 'Juicy sun-ripened strawberries with a soft vanilla creaminess.' },
+      { id: 6, name: 'Watermelon Lime', img: 'WATERMELON LIME.png', price: 20, category: 'citrus', color: '#7bc67e', tagline: 'Summer\u2019s best duo, zero sugar.',
+        desc: 'Juicy watermelon zested with fresh lime. Summer in every sip.',
+        ingredients: 'Sparkling water, watermelon juice, lime extract, mint, stevia, citric acid.',
+        nutrition: { energy: '7 kcal', sugar: '0g', carbs: '1.5g', sodium: '9mg' },
+        flavor: 'Fresh, hydrating watermelon with a zesty lime kick.' },
+      { id: 7, name: 'Banana', img: 'BANANA.png', price: 20, category: 'tropical', color: '#ffe135', tagline: 'Smooth tropical creaminess in every sip.',
+        desc: 'Creamy ripe banana with a smooth, mellow sweetness.',
+        ingredients: 'Sparkling water, banana puree, vanilla extract, stevia, citric acid.',
+        nutrition: { energy: '10 kcal', sugar: '0g', carbs: '2.5g', sodium: '8mg' },
+        flavor: 'Rich, creamy banana with a soft vanilla undertone.' },
+      { id: 8, name: 'Crisp Apple', img: 'CRISPAPPLE.png', price: 20, category: 'citrus', color: '#7ed957', tagline: 'Orchard-fresh crunch, zero sugar.',
+        desc: 'Fresh-picked apple with a sharp, refreshing bite.',
+        ingredients: 'Sparkling water, apple juice concentrate, green apple extract, stevia, citric acid.',
+        nutrition: { energy: '7 kcal', sugar: '0g', carbs: '1.8g', sodium: '6mg' },
+        flavor: 'Crisp, tangy apple with a clean, refreshing finish.' },
+      { id: 9, name: 'Mixed Fruit', img: 'MIXEDFRUIT.png', price: 20, category: 'tropical', color: '#f7a845', tagline: 'A fruit medley that hits every note.',
+        desc: 'A vibrant blend of tropical and citrus fruits in every sip.',
+        ingredients: 'Sparkling water, mango puree, orange concentrate, pineapple extract, stevia, citric acid.',
+        nutrition: { energy: '11 kcal', sugar: '0g', carbs: '2.8g', sodium: '7mg' },
+        flavor: 'Layered tropical sweetness with bright citrus highlights.' },
+      { id: 10, name: 'Orange', img: 'ORANGE.png', price: 20, category: 'citrus', color: '#ff8c42', tagline: 'Sun-kissed citrus boldness.',
+        desc: 'Bold, tangy orange with a bright citrus finish.',
+        ingredients: 'Sparkling water, orange juice concentrate, orange peel extract, stevia, citric acid.',
+        nutrition: { energy: '8 kcal', sugar: '0g', carbs: '2g', sodium: '5mg' },
+        flavor: 'Vibrant, zesty orange with a tangy, refreshing snap.' },
+    ];
+
+    const lb = document.getElementById('liquidBg');
+    for (let i = 0; i < 18; i++) { const el = document.createElement('div'); el.className = 'drip'; lb.appendChild(el); }
+
+    let cart = JSON.parse(localStorage.getItem('petrixCart')) || [];
+    const toast = document.getElementById('toast');
+    const container = document.getElementById('productContainer');
+
+    function showToast(m) { toast.textContent = m; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 3000); }
+
+    const params = new URLSearchParams(window.location.search);
+    const id = parseInt(params.get('id'));
+    const product = products.find(p => p.id === id);
+
+    if (!product) {
+      container.innerHTML = '<div style="text-align:center;padding:4rem 0;"><h2 style="color:rgba(255,255,255,0.3);">Product not found</h2><a href="shop.html" style="color:#FD4411;margin-top:1rem;display:inline-block;">← Back to shop</a></div>';
+    } else {
+      container.innerHTML = `
+        <div class="prod-img"><img src="${product.img}" alt="${product.name}"></div>
+        <div class="prod-info">
+          <h1 style="color:${product.color}">${product.name}</h1>
+          <p class="tagline">${product.tagline}</p>
+          <div class="price">₹${product.price} <span class="orig">₹${Math.round(product.price * 1.3)}</span></div>
+          <p class="desc">${product.desc}</p>
+          <div class="detail-block"><strong>Flavor Profile</strong><span>${product.flavor}</span></div>
+          <div class="detail-block"><strong>Ingredients</strong><span>${product.ingredients}</span></div>
+          <div class="detail-block"><strong>Nutrition</strong><span>Energy ${product.nutrition.energy} &bull; Sugar ${product.nutrition.sugar} &bull; Carbs ${product.nutrition.carbs} &bull; Sodium ${product.nutrition.sodium}</span></div>
+          <div class="actions">
+            <button class="add" onclick="addToCart(${product.id})">Add to Cart</button>
+            <a href="javascript:void(0)" class="buy" onclick="preOrder(${product.id})">Pre-Order</a>
+          </div>
+        </div>
+      `;
+    }
+
+    function addToCart(id) {
+      const p = products.find(x => x.id === id);
+      const e = cart.find(x => x.id === id);
+      if (e) e.qty++; else cart.push({ ...p, qty: 1 });
+      localStorage.setItem('petrixCart', JSON.stringify(cart));
+      showToast(p.name + ' added to cart');
+    }
+    function preOrder(id) {
+      const token = localStorage.getItem('petrixToken');
+      if (!token) { window.location.href = 'login.html?redirect=product.html?id=' + id; return; }
+      const p = products.find(x => x.id === id);
+      cart = [{ ...p, qty: 1 }];
+      localStorage.setItem('petrixCart', JSON.stringify(cart));
+      window.location.href = 'checkout.html';
+    }
+
+    // ── Reviews ──
+    let selectedStar = 0;
+    document.querySelectorAll('#starPicker span').forEach(el => {
+      el.addEventListener('click', () => {
+        selectedStar = parseInt(el.dataset.star);
+        document.querySelectorAll('#starPicker span').forEach(s => s.classList.toggle('active', parseInt(s.dataset.star) <= selectedStar));
+      });
+    });
+
+    function loadReviews() {
+      const all = JSON.parse(localStorage.getItem('petrixReviews')) || {};
+      const reviews = all[id] || [];
+      const list = document.getElementById('reviewList');
+      if (!reviews.length) { list.innerHTML = '<div class="no-reviews">No reviews yet. Be the first!</div>'; return; }
+      list.innerHTML = reviews.map(r => `
+        <div class="review-card">
+          <div class="rc-head">
+            <div class="name">${r.name}</div>
+            <div class="rc-stars">${'★'.repeat(r.stars)}${'☆'.repeat(5 - r.stars)}</div>
+          </div>
+          ${r.title ? '<div style="font-size:0.8rem;font-weight:600;margin-bottom:2px;">' + r.title + '</div>' : ''}
+          <div class="rc-date">${r.date}</div>
+          <div class="rc-text">${r.text}</div>
+        </div>
+      `).join('');
+    }
+
+    document.getElementById('submitReview').addEventListener('click', () => {
+      const name = document.getElementById('r-name').value.trim();
+      const title = document.getElementById('r-title').value.trim();
+      const text = document.getElementById('r-text').value.trim();
+      if (!name) { showToast('Please enter your name'); return; }
+      if (!text) { showToast('Please write a review'); return; }
+      if (!selectedStar) { showToast('Please select a star rating'); return; }
+
+      const all = JSON.parse(localStorage.getItem('petrixReviews')) || {};
+      if (!all[id]) all[id] = [];
+      all[id].unshift({ name, title, text, stars: selectedStar, date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) });
+      localStorage.setItem('petrixReviews', JSON.stringify(all));
+      document.getElementById('r-name').value = ''; document.getElementById('r-title').value = ''; document.getElementById('r-text').value = '';
+      selectedStar = 0; document.querySelectorAll('#starPicker span').forEach(s => s.classList.remove('active'));
+      loadReviews();
+      showToast('Review submitted!');
+    });
+
+    loadReviews();
+
+    const prodAuthLink = document.getElementById('prodAuthLink');
+    const ptok = localStorage.getItem('petrixToken');
+    const pusr = localStorage.getItem('petrixUser');
+    if (ptok && pusr) {
+      prodAuthLink.textContent = 'Profile';
+      prodAuthLink.href = 'profile.html';
+      const logoutLink = document.createElement('a');
+      logoutLink.textContent = 'Logout';
+      logoutLink.href = '#';
+      logoutLink.style.cssText = 'color:rgba(255,255,255,0.35);text-decoration:none;font-size:0.78rem;text-transform:uppercase;letter-spacing:2px;font-weight:600;';
+      logoutLink.onclick = function(e) { e.preventDefault(); localStorage.removeItem('petrixToken'); localStorage.removeItem('petrixUser'); location.reload(); };
+      prodAuthLink.parentNode.insertBefore(logoutLink, prodAuthLink.nextSibling);
+    }
+  </script>
+</body>
+</html>

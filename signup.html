@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PETRIX — Sign Up</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&family=Anton&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Poppins', sans-serif; background: #0a0604; color: white; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0a0604; }
+    ::-webkit-scrollbar-thumb { background: #FD4411; border-radius: 10px; }
+    .liquid-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .drip { position: absolute; top: -60px; border-radius: 0 0 50% 50%; animation: dripFall linear infinite; opacity: 0.08; }
+    .drip:nth-child(1) { left: 3%; height: 180px; animation-duration: 6s; animation-delay: 0s; width: 8px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(2) { left: 10%; height: 260px; animation-duration: 8s; animation-delay: -1.5s; width: 12px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(3) { left: 18%; height: 140px; animation-duration: 5.5s; animation-delay: -3s; width: 7px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(4) { left: 25%; height: 220px; animation-duration: 7s; animation-delay: -0.5s; width: 10px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(5) { left: 33%; height: 160px; animation-duration: 6.5s; animation-delay: -4s; width: 9px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(6) { left: 40%; height: 280px; animation-duration: 9s; animation-delay: -2s; width: 14px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(7) { left: 48%; height: 190px; animation-duration: 6.2s; animation-delay: -5s; width: 8px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(8) { left: 55%; height: 240px; animation-duration: 7.8s; animation-delay: -1s; width: 11px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(9) { left: 62%; height: 130px; animation-duration: 5s; animation-delay: -3.5s; width: 6px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(10) { left: 70%; height: 200px; animation-duration: 7.2s; animation-delay: -4.5s; width: 10px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(11) { left: 77%; height: 300px; animation-duration: 8.5s; animation-delay: -0.8s; width: 13px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(12) { left: 84%; height: 170px; animation-duration: 5.8s; animation-delay: -2.5s; width: 8px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(13) { left: 90%; height: 230px; animation-duration: 7.5s; animation-delay: -5.5s; width: 11px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(14) { left: 96%; height: 150px; animation-duration: 6.8s; animation-delay: -3.2s; width: 7px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(15) { left: 15%; height: 100px; animation-duration: 4.8s; animation-delay: -6s; width: 6px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(16) { left: 50%; height: 120px; animation-duration: 5.2s; animation-delay: -7s; width: 5px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(17) { left: 72%; height: 90px; animation-duration: 4.5s; animation-delay: -4.8s; width: 6px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(18) { left: 35%; height: 110px; animation-duration: 5s; animation-delay: -6.5s; width: 5px; background: linear-gradient(180deg, transparent, #FD7744); }
+    @keyframes dripFall { 0% { transform: translateY(-100px); opacity: 0; } 10% { opacity: 0.1; } 90% { opacity: 0.1; } 100% { transform: translateY(100vh); opacity: 0; } }
+
+    .auth-card { position: relative; z-index: 1; width: 100%; max-width: 420px; padding: 0 1.5rem; }
+    .card { background: rgba(255,255,255,0.02); border-radius: 28px; padding: 2.5rem 2rem; border: 1px solid rgba(253,68,17,0.1); backdrop-filter: blur(16px); }
+    .logo-area { text-align: center; margin-bottom: 2rem; }
+    .logo-area h1 { font-family: 'Anton', sans-serif; font-size: 1.8rem; text-transform: uppercase; letter-spacing: 2px; }
+    .logo-area h1 span { color: #FD4411; }
+    .logo-area p { color: rgba(255,255,255,0.3); font-size: 0.78rem; margin-top: 0.3rem; }
+
+    .form-group { margin-bottom: 1.2rem; }
+    .form-group label { display: block; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; color: rgba(255,255,255,0.35); margin-bottom: 0.4rem; font-weight: 600; }
+    .form-group input { width: 100%; padding: 0.9rem 1.2rem; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(253,68,17,0.12); color: white; font-family: 'Poppins', sans-serif; font-size: 0.85rem; outline: none; transition: all 0.3s; }
+    .form-group input:focus { border-color: #FD4411; box-shadow: 0 0 25px rgba(253,68,17,0.06); background: rgba(255,255,255,0.05); }
+
+    .submit-btn { width: 100%; padding: 1rem; border: none; border-radius: 14px; background: #FD4411; color: white; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: all 0.3s; margin-top: 0.5rem; box-shadow: 0 0 30px rgba(253,68,17,0.18); position: relative; overflow: hidden; }
+    .submit-btn::after { content: ''; position: absolute; inset: 0; background: rgba(255,255,255,0.12); opacity: 0; transition: opacity 0.3s; }
+    .submit-btn:hover::after { opacity: 1; }
+    .submit-btn:hover { transform: scale(1.03); box-shadow: 0 0 60px rgba(253,68,17,0.4); }
+    .submit-btn:active { transform: scale(0.95); }
+    .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+
+    .auth-switch { text-align: center; margin-top: 1.2rem; font-size: 0.82rem; color: rgba(255,255,255,0.35); }
+    .auth-switch a { color: #FD4411; text-decoration: none; font-weight: 600; transition: color 0.3s; }
+    .auth-switch a:hover { color: #FD7744; }
+
+    .error-msg { background: rgba(253,68,17,0.08); border: 1px solid rgba(253,68,17,0.2); border-radius: 10px; padding: 0.7rem 1rem; font-size: 0.78rem; color: #FD7744; margin-bottom: 1rem; display: none; }
+    .error-msg.show { display: block; }
+
+    .back-link { display: inline-flex; align-items: center; gap: 6px; color: rgba(255,255,255,0.25); text-decoration: none; font-size: 0.75rem; margin-bottom: 1.5rem; transition: color 0.3s; }
+    .back-link:hover { color: #FD4411; }
+
+    .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px); z-index: 200; padding: 1rem 2rem; border-radius: 16px; background: rgba(253,68,17,0.1); border: 1px solid rgba(253,68,17,0.25); backdrop-filter: blur(16px); color: white; font-size: 0.85rem; transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease; opacity: 0; pointer-events: none; max-width: 90vw; }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    @media (max-width: 500px) { .card { padding: 1.8rem 1.2rem; } .logo-area h1 { font-size: 1.4rem; } }
+  </style>
+</head>
+<body>
+  <div class="liquid-bg" id="liquidBg"></div>
+  <div class="auth-card">
+    <div class="card">
+      <a href="index.html" class="back-link">&larr; Back to Home</a>
+      <div class="logo-area">
+        <h1>PET<span>RIX</span></h1>
+        <p>Create your account</p>
+      </div>
+      <div class="error-msg" id="errorMsg"></div>
+      <form id="signupForm">
+        <div class="form-group"><label>Username</label><input type="text" id="username" placeholder="Choose a username" required></div>
+        <div class="form-group"><label>Email</label><input type="email" id="email" placeholder="you@example.com" required></div>
+        <div class="form-group"><label>Password</label><input type="password" id="password" placeholder="At least 6 characters" required></div>
+        <button type="submit" class="submit-btn" id="submitBtn">Create Account</button>
+      </form>
+      <div class="auth-switch">Already have an account? <a href="login.html">Log in</a></div>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+  <script>
+    const API = '/auth';
+    const lb = document.getElementById('liquidBg');
+    for (let i = 0; i < 18; i++) { const el = document.createElement('div'); el.className = 'drip'; lb.appendChild(el); }
+
+    const toast = document.getElementById('toast');
+    function showToast(m) { toast.textContent = m; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 4000); }
+
+    document.getElementById('signupForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      const errEl = document.getElementById('errorMsg');
+      errEl.classList.remove('show');
+      btn.textContent = 'Creating account...';
+      btn.disabled = true;
+      try {
+        const res = await fetch(API + '/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: document.getElementById('username').value,
+            email: document.getElementById('email').value,
+            password: document.getElementById('password').value
+          })
+        });
+        const data = await res.json();
+        if (!res.ok) { errEl.textContent = data.error; errEl.classList.add('show'); btn.textContent = 'Create Account'; btn.disabled = false; return; }
+        localStorage.setItem('petrixToken', data.token);
+        localStorage.setItem('petrixUser', document.getElementById('email').value);
+        showToast('Account created!');
+        setTimeout(() => { window.location.href = 'profile.html?setup=1'; }, 1000);
+      } catch (err) {
+        errEl.textContent = 'Cannot connect to server. Make sure the backend is running.';
+        errEl.classList.add('show');
+        btn.textContent = 'Create Account';
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

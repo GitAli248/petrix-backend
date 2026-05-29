@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PETRIX — Checkout</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&family=Anton&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Poppins', sans-serif; background: #0a0604; color: white; min-height: 100vh; }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; background: rgba(10,6,4,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(253,68,17,0.1); }
+    .logo { font-weight: 900; font-size: 1.3rem; text-transform: uppercase; letter-spacing: 3px; display: flex; align-items: center; }
+    .logo .pet { color: white; } .logo .rix { color: #FD4411; }
+    .back-btn { font-size: 1.1rem; color: #FD4411; text-decoration: none; font-weight: 900; margin-right: 10px; text-shadow: 0 0 2px #FD4411; }
+    .container { max-width: 800px; margin: 0 auto; padding: 6rem 2rem 3rem; }
+    h1 { font-family: 'Anton', sans-serif; font-size: 2rem; text-transform: uppercase; margin-bottom: 0.3rem; }
+    h1 span { color: #FD4411; }
+    .sub { color: rgba(255,255,255,0.35); font-size: 0.85rem; margin-bottom: 2rem; }
+    .checkout-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 2rem; align-items: start; }
+    @media (max-width: 700px) { .checkout-grid { grid-template-columns: 1fr; } }
+    .form-section { background: rgba(255,255,255,0.02); border-radius: 24px; padding: 2rem; border: 1px solid rgba(253,68,17,0.08); }
+    .form-section h2 { font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1.2rem; }
+    .form-group { margin-bottom: 1rem; }
+    .form-group label { display: block; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; color: rgba(255,255,255,0.35); margin-bottom: 0.4rem; font-weight: 600; }
+    .form-group input, .form-group textarea { width: 100%; padding: 0.85rem 1rem; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(253,68,17,0.12); color: white; font-family: 'Poppins', sans-serif; font-size: 0.85rem; outline: none; transition: border 0.3s; }
+    .form-group input:focus, .form-group textarea:focus { border-color: #FD4411; background: rgba(255,255,255,0.05); }
+    .form-group textarea { resize: vertical; min-height: 70px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
+    .order-summary { background: rgba(255,255,255,0.02); border-radius: 24px; padding: 2rem; border: 1px solid rgba(253,68,17,0.08); position: sticky; top: 6rem; }
+    .order-summary h2 { font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1.2rem; }
+    .order-item { display: flex; align-items: center; gap: 1rem; padding: 0.8rem 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+    .order-item .oi-img { width: 44px; height: 44px; border-radius: 10px; overflow: hidden; flex-shrink: 0; background: rgba(255,255,255,0.03); display: flex; align-items: center; justify-content: center; }
+    .order-item .oi-img img { width: 100%; height: 100%; object-fit: contain; }
+    .order-item .oi-info { flex: 1; }
+    .order-item .oi-info h4 { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; }
+    .order-item .oi-info .oi-qty { font-size: 0.7rem; color: rgba(255,255,255,0.3); }
+    .order-item .oi-price { font-size: 0.85rem; font-weight: 700; color: #FD4411; }
+    .order-totals { padding-top: 1rem; }
+    .order-totals .row { display: flex; justify-content: space-between; font-size: 0.85rem; color: rgba(255,255,255,0.5); margin-bottom: 0.4rem; }
+    .order-totals .row.total { font-size: 1.1rem; font-weight: 900; color: white; margin-top: 0.5rem; padding-top: 0.8rem; border-top: 1px solid rgba(253,68,17,0.1); }
+    .order-totals .row.total span { color: #FD4411; }
+    .place-order { width: 100%; padding: 1rem; border: none; border-radius: 14px; background: #FD4411; color: white; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: all 0.3s; margin-top: 1.5rem; }
+    .place-order:hover { background: #e33d0f; transform: scale(1.02); }
+    .empty-cart { text-align: center; padding: 4rem 0; }
+    .empty-cart h2 { color: rgba(255,255,255,0.2); font-size: 1.2rem; margin-bottom: 1rem; }
+    .empty-cart a { color: #FD4411; text-decoration: none; font-weight: 600; }
+    .liquid-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .drip { position: absolute; top: -60px; border-radius: 0 0 50% 50%; animation: dripFall linear infinite; opacity: 0.08; }
+    .drip:nth-child(1) { left: 3%; height: 180px; animation-duration: 6s; animation-delay: 0s; width: 8px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(2) { left: 10%; height: 260px; animation-duration: 8s; animation-delay: -1.5s; width: 12px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(3) { left: 18%; height: 140px; animation-duration: 5.5s; animation-delay: -3s; width: 7px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(4) { left: 25%; height: 220px; animation-duration: 7s; animation-delay: -0.5s; width: 10px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(5) { left: 33%; height: 160px; animation-duration: 6.5s; animation-delay: -4s; width: 9px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(6) { left: 40%; height: 280px; animation-duration: 9s; animation-delay: -2s; width: 14px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(7) { left: 48%; height: 190px; animation-duration: 6.2s; animation-delay: -5s; width: 8px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(8) { left: 55%; height: 240px; animation-duration: 7.8s; animation-delay: -1s; width: 11px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(9) { left: 62%; height: 130px; animation-duration: 5s; animation-delay: -3.5s; width: 6px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(10) { left: 70%; height: 200px; animation-duration: 7.2s; animation-delay: -4.5s; width: 10px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(11) { left: 77%; height: 300px; animation-duration: 8.5s; animation-delay: -0.8s; width: 13px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(12) { left: 84%; height: 170px; animation-duration: 5.8s; animation-delay: -2.5s; width: 8px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(13) { left: 90%; height: 230px; animation-duration: 7.5s; animation-delay: -5.5s; width: 11px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(14) { left: 96%; height: 150px; animation-duration: 6.8s; animation-delay: -3.2s; width: 7px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(15) { left: 15%; height: 100px; animation-duration: 4.8s; animation-delay: -6s; width: 6px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(16) { left: 50%; height: 120px; animation-duration: 5.2s; animation-delay: -7s; width: 5px; background: linear-gradient(180deg, transparent, #FD7744); }
+    .drip:nth-child(17) { left: 72%; height: 90px; animation-duration: 4.5s; animation-delay: -4.8s; width: 6px; background: linear-gradient(180deg, transparent, #FD4411); }
+    .drip:nth-child(18) { left: 35%; height: 110px; animation-duration: 5s; animation-delay: -6.5s; width: 5px; background: linear-gradient(180deg, transparent, #FD7744); }
+    @keyframes dripFall { 0% { transform: translateY(-100px); opacity: 0; } 10% { opacity: 0.1; } 90% { opacity: 0.1; } 100% { transform: translateY(100vh); opacity: 0; } }
+
+    .success-screen { position: fixed; inset: 0; z-index: 500; background: #0a0604; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem; }
+    .success-screen.show { display: flex; }
+    .tick-circle { width: 120px; height: 120px; border-radius: 50%; border: 4px solid #FD4411; display: flex; align-items: center; justify-content: center; margin-bottom: 2rem; position: relative; animation: tickPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) both; }
+    @keyframes tickPop { 0% { transform: scale(0); opacity: 0; } 60% { transform: scale(1.2); } 100% { transform: scale(1); opacity: 1; } }
+    .tick-circle svg { width: 60px; height: 60px; }
+    .tick-circle svg path { stroke: #FD4411; stroke-width: 4; fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 80; stroke-dashoffset: 80; animation: tickDraw 0.5s 0.4s ease forwards; }
+    @keyframes tickDraw { to { stroke-dashoffset: 0; } }
+    .tick-ring { position: absolute; inset: -20px; border-radius: 50%; border: 2px solid rgba(253,68,17,0.3); animation: ringExpand 0.8s 0.3s ease-out both; }
+    .tick-ring:nth-child(2) { animation-delay: 0.5s; }
+    @keyframes ringExpand { 0% { transform: scale(0.5); opacity: 1; } 100% { transform: scale(1.5); opacity: 0; } }
+    .success-screen h1 { font-family: 'Anton', sans-serif; font-size: clamp(2rem, 6vw, 3.5rem); text-transform: uppercase; animation: fadeUp 0.6s 0.6s ease both; }
+    .success-screen h1 span { color: #FD4411; }
+    .success-screen .sub-msg { color: rgba(255,255,255,0.5); font-size: 1rem; margin-top: 1rem; max-width: 500px; line-height: 1.7; animation: fadeUp 0.6s 0.8s ease both; }
+    .success-screen .order-detail { color: rgba(255,255,255,0.3); font-size: 0.8rem; margin-top: 1.5rem; animation: fadeUp 0.6s 1s ease both; }
+    .success-screen .back-shop { margin-top: 2.5rem; padding: 1rem 3rem; border-radius: 50px; background: #FD4411; color: white; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; border: none; text-decoration: none; animation: fadeUp 0.6s 1.2s ease both; transition: all 0.3s; }
+    .success-screen .back-shop:hover { background: #e33d0f; transform: scale(1.05); }
+    @keyframes fadeUp { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
+
+    .confetti-piece { position: absolute; width: 8px; height: 8px; border-radius: 2px; animation: confettiFall linear forwards; }
+    @keyframes confettiFall { 0% { transform: translateY(-100px) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
+  </style>
+</head>
+<body>
+  <div class="liquid-bg" id="liquidBg"></div>
+  <nav>
+    <div class="logo"><a href="shop.html" style="color:inherit;text-decoration:none;display:flex;align-items:center;"><span class="back-btn">❮</span> <span class="pet">PET</span><span class="rix">RIX</span></a></div>
+    <a href="login.html" id="checkoutAuthLink" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.78rem;text-transform:uppercase;letter-spacing:2px;font-weight:600;">Log In</a>
+  </nav>
+
+  <div class="container" id="app">
+    <div id="checkoutContent"></div>
+  </div>
+
+  <div class="success-screen" id="successScreen">
+    <div class="tick-circle">
+      <div class="tick-ring"></div>
+      <div class="tick-ring"></div>
+      <svg viewBox="0 0 52 52"><path d="M14 27l8 8 16-16"/></svg>
+    </div>
+    <h1>Thank <span>You!</span></h1>
+    <p class="sub-msg">Your pre-order is confirmed! You'll receive your PETRIX drinks after launch. Stay tuned for the big drop.</p>
+    <p class="order-detail" id="orderDetail"></p>
+    <a href="shop.html" class="back-shop">Back to Shop</a>
+  </div>
+
+  <script>
+    const API = '/auth';
+    const lb = document.getElementById('liquidBg');
+    for (let i = 0; i < 18; i++) { const el = document.createElement('div'); el.className = 'drip'; lb.appendChild(el); }
+
+    function showToast(m) { alert(m); }
+
+    const token = localStorage.getItem('petrixToken');
+    if (!token) { window.location.href = 'login.html?redirect=checkout.html'; }
+
+    const cart = JSON.parse(localStorage.getItem('petrixCart')) || [];
+    const content = document.getElementById('checkoutContent');
+
+    if (!cart.length) {
+      content.innerHTML = '<div class="empty-cart"><h2>Your cart is empty</h2><a href="shop.html">← Back to Shop</a></div>';
+    } else {
+      const sub = cart.reduce((s, x) => s + x.price * x.qty, 0);
+      const ship = sub >= 500 ? 0 : 28;
+      const total = sub + ship;
+
+      content.innerHTML = `
+        <h1>Check<span>out</span></h1>
+        <p class="sub">Complete your order</p>
+        <div class="checkout-grid">
+          <div class="form-section">
+            <h2>Delivery Details</h2>
+            <div id="savedAddrSection" style="display:none;margin-bottom:1rem;padding:0.8rem 1rem;background:rgba(253,68,17,0.06);border-radius:12px;border:1px solid rgba(253,68,17,0.12);">
+              <label style="font-size:0.7rem;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,0.35);font-weight:600;">Saved Address</label>
+              <select id="savedAddrSelect" style="width:100%;padding:0.7rem 0.9rem;border-radius:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(253,68,17,0.12);color:white;font-family:'Poppins',sans-serif;font-size:0.8rem;outline:none;margin-top:0.4rem;">
+                <option value="" style="color:black;background:white;">Select a saved address...</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>First Name</label><input type="text" id="c-first" placeholder="Alex" readonly style="opacity:0.7;cursor:not-allowed;"></div>
+              <div class="form-group"><label>Last Name</label><input type="text" id="c-last" placeholder="River" readonly style="opacity:0.7;cursor:not-allowed;"></div>
+            </div>
+            <div class="form-group"><label>Email</label><input type="email" id="c-email" placeholder="alex@example.com" readonly style="opacity:0.7;cursor:not-allowed;"></div>
+            <div class="form-group"><label>Phone</label><input type="tel" id="c-phone" placeholder="+91 98765 43210" readonly style="opacity:0.7;cursor:not-allowed;"></div>
+            <div class="form-group"><label>Delivery Address</label><textarea id="c-address" placeholder="House/Flat, Street, City, State" readonly style="opacity:0.7;cursor:not-allowed;"></textarea></div>
+            <div class="form-group"><label>Pincode</label><input type="text" id="c-pincode" placeholder="110001" readonly style="opacity:0.7;cursor:not-allowed;"></div>
+            <div style="text-align:center;margin-top:0.8rem;"><a href="profile.html" style="color:#FD4411;text-decoration:none;font-size:0.78rem;text-transform:uppercase;letter-spacing:1px;font-weight:600;transition:color 0.3s;">✎ Edit Delivery Details</a></div>
+          </div>
+          <div class="order-summary">
+            <h2>Your Order</h2>
+            ${cart.map(x => `
+              <div class="order-item">
+                <div class="oi-img"><img src="${x.img}" alt="${x.name}"></div>
+                <div class="oi-info"><h4>${x.name}</h4><div class="oi-qty">Qty: ${x.qty}</div></div>
+                <div class="oi-price">₹${x.price * x.qty}</div>
+              </div>
+            `).join('')}
+            <div class="order-totals">
+              <div class="row"><span>Subtotal</span><span>₹${sub}</span></div>
+              <div class="row"><span>Shipping</span><span>${ship === 0 ? 'FREE' : '₹' + ship}</span></div>
+              <div class="row total"><span>Total</span><span>₹${total}</span></div>
+            </div>
+            <button class="place-order" id="placeOrder">Place Order</button>
+          </div>
+        </div>
+      `;
+
+      // Load profile and pre-fill
+      async function loadProfile() {
+        try {
+          const res = await fetch(API + '/profile', { headers: { 'Authorization': 'Bearer ' + token } });
+          const data = await res.json();
+          if (!res.ok) return;
+          const p = data.profile;
+          if (p.full_name) {
+            const parts = p.full_name.trim().split(' ');
+            document.getElementById('c-first').value = parts[0] || '';
+            document.getElementById('c-last').value = parts.slice(1).join(' ') || '';
+          }
+          document.getElementById('c-phone').value = p.phone || '';
+          document.getElementById('c-email').value = localStorage.getItem('petrixUser') || '';
+          if (p.addresses && p.addresses.length) {
+            const sel = document.getElementById('savedAddrSelect');
+            const sec = document.getElementById('savedAddrSection');
+            sec.style.display = 'block';
+            p.addresses.forEach((a, i) => {
+              const opt = document.createElement('option');
+              opt.value = i;
+              opt.textContent = a.label + ': ' + a.line + ', ' + a.city;
+              opt.style.cssText = 'color:black;background:white;';
+              sel.appendChild(opt);
+            });
+            sel.addEventListener('change', function() {
+              if (this.value === '') return;
+              const addr = p.addresses[parseInt(this.value)];
+              document.getElementById('c-address').value = addr.line + ', ' + addr.city + ', ' + addr.state;
+              document.getElementById('c-pincode').value = addr.pincode;
+            });
+          }
+        } catch (e) {}
+      }
+      loadProfile();
+
+      document.getElementById('placeOrder').addEventListener('click', function() {
+        const first = document.getElementById('c-first').value.trim();
+        const last = document.getElementById('c-last').value.trim();
+        const email = document.getElementById('c-email').value.trim();
+        const phone = document.getElementById('c-phone').value.trim();
+        const address = document.getElementById('c-address').value.trim();
+        const pincode = document.getElementById('c-pincode').value.trim();
+        if (!first || !last || !email || !phone || !address || !pincode) { alert('Please fill all fields'); return; }
+
+        const orderItems = cart.map(x => x.name + ' x' + x.qty).join(', ');
+
+        fetch('https://script.google.com/macros/s/AKfycbw7ZD5f0TqIePMWS3l7qECTJ7Hh4MNOVlnROSSXbYtplD8iUXKZHJs3rb1DgkvSn4JD/exec', {
+          method: 'POST',
+          mode: 'no-cors',
+          body: new URLSearchParams({ name: first + ' ' + last, email, phone, address, pincode, order: orderItems, total: '₹' + total, method: 'Pending' })
+        }).catch(() => {});
+
+        localStorage.removeItem('petrixCart');
+        document.getElementById('checkoutContent').style.display = 'none';
+        document.getElementById('orderDetail').textContent = 'Order: ' + orderItems + ' — Total: ₹' + total;
+        document.getElementById('successScreen').classList.add('show');
+
+        const colors = ['#FD4411', '#FD7744', '#f0e68c', '#8a6cf5', '#ff9f43', '#ff6b6b', '#7bc67e', '#ffe135', '#7ed957', '#ff8c42'];
+        for (let i = 0; i < 60; i++) {
+          const c = document.createElement('div');
+          c.className = 'confetti-piece';
+          c.style.left = Math.random() * 100 + '%';
+          c.style.background = colors[Math.floor(Math.random() * colors.length)];
+          c.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+          c.style.animationDelay = (Math.random() * 0.8) + 's';
+          c.style.width = (6 + Math.random() * 6) + 'px';
+          c.style.height = (6 + Math.random() * 6) + 'px';
+          c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+          document.getElementById('successScreen').appendChild(c);
+        }
+      });
+    }
+
+    const coAuthLink = document.getElementById('checkoutAuthLink');
+    const ctok = localStorage.getItem('petrixToken');
+    const cusr = localStorage.getItem('petrixUser');
+    if (ctok && cusr) {
+      coAuthLink.textContent = 'Profile';
+      coAuthLink.href = 'profile.html';
+      const logoutLink = document.createElement('a');
+      logoutLink.textContent = 'Logout';
+      logoutLink.href = '#';
+      logoutLink.style.cssText = 'color:rgba(255,255,255,0.35);text-decoration:none;font-size:0.78rem;text-transform:uppercase;letter-spacing:2px;font-weight:600;';
+      logoutLink.onclick = function(e) { e.preventDefault(); localStorage.removeItem('petrixToken'); localStorage.removeItem('petrixUser'); location.reload(); };
+      coAuthLink.parentNode.insertBefore(logoutLink, coAuthLink.nextSibling);
+    }
+  </script>
+</body>
+</html>
